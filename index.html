@@ -218,16 +218,26 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
-  .page{padding:24px 20px}
+  .page{padding:20px 16px;padding-top:70px}
   .hero-name{font-size:2.4rem}
   h2{font-size:1.6rem}
   .about-layout{flex-direction:column;align-items:center}
   .about-sidebar{width:auto}
-  .top-bar{padding:12px 20px}
-  .nav-arrows{bottom:20px}
+  .top-bar{padding:10px 16px}
+  .nav-arrows{bottom:16px}
   .kb-hint{display:none}
   .skills-grid{grid-template-columns:1fr}
   .projects-grid{grid-template-columns:1fr}
+  .section-tag{font-size:.7rem}
+  .hero-sub{font-size:.85rem}
+  .hero-tags{gap:8px}
+  .hero-tag{padding:5px 12px;font-size:.75rem}
+  .timeline-item .timeline-detail{max-height:none}
+  .timeline-detail-inner{padding-top:8px;border-top:1px solid rgba(255,255,255,.06);margin-top:8px}
+}
+@supports(height:100dvh){
+  body{height:100dvh}
+  .main-container{height:100dvh}
 }
 </style>
 </head>
