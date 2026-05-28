@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>徐熠华 | Portfolio</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#8ea4b8;--accent-bright:#bcc8d4;--accent-dim:#6b7d8e;
+  --accent-glow:rgba(142,164,184,.4);--accent-glow-strong:rgba(160,180,200,.6);
+  --dark:#0c0c0d;--darker:#070708;--card:#141416;
+  --text:#c8ccd0;--text-dim:#7a7e84;--white:#e8eaec;
+  --font-mono:'Courier New',monospace;--font-sans:'Segoe UI',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-sans);background:var(--darker);color:var(--text);
+  overflow:hidden;height:100vh;width:100vw;
+}
+
+/* ===== Canvas Rain Background ===== */
+#matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.12;pointer-events:none}
+
+/* ===== Scanline overlay ===== */
+.scanlines{position:fixed;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.006) 2px,rgba(255,255,255,.006) 4px);
+  z-index:1;pointer-events:none}
+
+/* ===== Main Container ===== */
+.main-container{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column}
+
+/* ===== Top Bar ===== */
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 40px;border-bottom:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(12px);background:rgba(7,7,8,.88);z-index:10;
+}
+.logo{font-family:var(--font-mono);color:var(--accent-bright);font-size:1.4rem;font-weight:bold;
+  letter-spacing:2px}
+.top-actions{display:flex;gap:16px;align-items:center}
+.lang-btn{
+  background:none;border:1px solid var(--accent-dim);color:var(--accent);padding:6px 14px;
+  font-family:var(--font-mono);font-size:.8rem;cursor:pointer;transition:all .3s;
+  border-radius:2px;text-transform:uppercase;letter-spacing:1px
+}
+.lang-btn:hover{background:rgba(255,255,255,.04);border-color:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
+.page-dots{display:flex;gap:10px}
+.page-dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--accent-dim);
+  background:transparent;cursor:pointer;transition:all .3s}
+.page-dot.active{background:var(--accent-bright);box-shadow:0 0 8px var(--accent-glow);border-color:var(--accent-bright)}
+.page-dot:hover{border-color:var(--accent-bright)}
+
+/* ===== Page Wrapper ===== */
+.pages-wrapper{flex:1;position:relative;overflow:hidden}
+.page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(40px);transition:all .45s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;padding:40px 80px;
+}
+.page.active{opacity:1;transform:translateY(0);pointer-events:all}
+.page.exit-up{opacity:0;transform:translateY(-40px)}
+.page.exit-down{opacity:0;transform:translateY(40px)}
+.page-inner{max-width:900px;width:100%}
+
+/* ===== Navigation Arrows ===== */
+.nav-arrows{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:30px;z-index:10}
+.nav-arrow{
+  width:48px;height:48px;border:1px solid var(--accent-dim);background:rgba(7,7,8,.85);
+  color:var(--accent);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all .3s;font-family:var(--font-mono);border-radius:2px
+}
+.nav-arrow:hover{background:rgba(255,255,255,.04);box-shadow:0 0 16px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
+.nav-arrow:active{transform:scale(.94)}
+.page-label{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-mono);color:var(--accent-dim);font-size:.72rem;
+  letter-spacing:4px;text-transform:uppercase;z-index:10
+}
+
+/* ===== Typography ===== */
+.section-tag{font-family:var(--font-mono);color:var(--accent);font-size:.75rem;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.section-tag::before{content:'> ';opacity:.5}
+h2{font-size:2.4rem;color:var(--white);margin-bottom:8px;font-weight:300;letter-spacing:1px}
+h2 .accent{color:var(--accent-bright);font-weight:400}
+.subtitle{color:var(--text-dim);font-size:1rem;margin-bottom:32px;font-family:var(--font-mono)}
+
+/* ===== Home Page ===== */
+.hero-name{font-size:4rem;font-weight:700;color:var(--white);font-family:var(--font-mono);line-height:1.1}
+.hero-name .cursor{color:var(--accent-bright);animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.hero-title{font-size:1.3rem;color:var(--accent-bright);margin:16px 0 8px;font-family:var(--font-mono)}
+.hero-sub{color:var(--text-dim);font-size:.95rem;margin-bottom:32px;max-width:520px;line-height:1.7}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px}
+.hero-tag{
+  border:1px solid var(--accent-dim);color:var(--accent);padding:6px 16px;
+  font-family:var(--font-mono);font-size:.8rem;transition:all .3s;text-decoration:none;
+  border-radius:2px;cursor:pointer;background:none
+}
+.hero-tag:hover{background:rgba(255,255,255,.04);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
+.hero-tag.featured{background:rgba(255,255,255,.03);border-color:var(--accent)}
+
+/* ===== Skills Page ===== */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.skill-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.05);padding:20px;
+  transition:all .4s;position:relative;overflow:hidden;border-radius:2px
+}
+.skill-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+  background:var(--accent-bright);transform:scaleX(0);transition:transform .4s;transform-origin:left
+}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-card:hover{border-color:var(--accent-dim);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.skill-icon{font-size:2rem;margin-bottom:10px}
+.skill-name{color:var(--white);font-weight:600;margin-bottom:4px}
+.skill-level{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-dim)}
+.skill-bar{height:3px;background:rgba(255,255,255,.06);margin-top:8px;border-radius:2px}
+.skill-bar-fill{height:100%;background:var(--accent-bright);transition:width 1.2s cubic-bezier(.4,0,.2,1);border-radius:2px;width:0}
+
+/* ===== Experience Timeline ===== */
+.timeline{position:relative;padding-left:30px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;width:1px;height:100%;
+  background:linear-gradient(180deg,var(--accent-bright),rgba(255,255,255,.04))
+}
+.timeline-item{position:relative;margin-bottom:32px;cursor:pointer;transition:all .3s}
+.timeline-item::before{
+  content:'';position:absolute;left:-34px;top:8px;width:10px;height:10px;
+  border-radius:50%;background:var(--darker);border:2px solid var(--accent-dim);transition:all .3s
+}
+.timeline-item:hover::before{background:var(--accent-bright);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright)}
+.timeline-date{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);margin-bottom:4px}
+.timeline-role{color:var(--white);font-weight:600;font-size:1.1rem}
+.timeline-org{color:var(--text-dim);font-size:.85rem;margin-bottom:4px}
+.timeline-detail{max-height:0;overflow:hidden;transition:max-height .5s ease;color:var(--text);font-size:.85rem;line-height:1.6}
+.timeline-item:hover .timeline-detail{max-height:200px}
+.timeline-detail-inner{padding-top:8px;border-top:1px solid rgba(255,255,255,.06);margin-top:8px}
+
+/* ===== Projects Page ===== */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.project-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.04);padding:24px;
+  transition:all .4s;position:relative;border-radius:2px
+}
+.project-card:hover{border-color:var(--accent-dim);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.project-year{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-dim);letter-spacing:2px}
+.project-name{color:var(--white);font-size:1.2rem;margin:8px 0;font-weight:600}
+.project-desc{color:var(--text-dim);font-size:.85rem;line-height:1.6;margin-bottom:12px}
+.project-techs{display:flex;flex-wrap:wrap;gap:6px}
+.project-tech{
+  font-family:var(--font-mono);font-size:.68rem;padding:3px 10px;
+  border:1px solid rgba(255,255,255,.1);color:var(--accent);border-radius:2px
+}
+
+/* ===== About / Contact Page ===== */
+.about-layout{display:flex;gap:48px;align-items:flex-start}
+.about-main{flex:1}
+.about-text{line-height:1.8;color:var(--text);margin-bottom:24px}
+.about-sidebar{width:200px;text-align:center;flex-shrink:0}
+.qr-box{
+  width:160px;height:160px;border:1px solid var(--accent-dim);margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:var(--card);transition:all .3s;border-radius:2px
+}
+.qr-box img{width:100%;height:100%;object-fit:cover}
+.qr-box:hover{border-color:var(--accent-bright);box-shadow:0 0 20px var(--accent-glow)}
+.qr-label{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-dim);letter-spacing:1px}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.contact-link{
+  display:flex;align-items:center;gap:8px;border:1px solid var(--accent-dim);padding:10px 18px;
+  color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.8rem;
+  transition:all .3s;border-radius:2px
+}
+.contact-link:hover{background:rgba(255,255,255,.04);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright)}
+
+/* ===== Terminal ===== */
+.terminal-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;
+  background:rgba(0,0,0,.94);display:none;flex-direction:column;
+  font-family:var(--font-mono)
+}
+.terminal-overlay.open{display:flex}
+.terminal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.08)
+}
+.terminal-title{color:var(--accent);font-size:.8rem;letter-spacing:2px}
+.terminal-close{background:none;border:none;color:var(--accent);font-size:1.2rem;cursor:pointer;
+  font-family:var(--font-mono);padding:4px 10px;transition:all .2s}
+.terminal-close:hover{color:var(--accent-bright);background:rgba(255,255,255,.04)}
+.terminal-body{flex:1;padding:20px;overflow-y:auto;font-size:.85rem;line-height:1.8}
+.terminal-body .line{color:var(--text-dim)}
+.terminal-body .line.cmd{color:var(--accent-bright)}
+.terminal-body .line.cmd::before{content:'visitor@xyh:~$ ';color:var(--accent-dim)}
+.terminal-body .line.output{color:var(--text);padding-left:16px}
+.terminal-input-line{display:flex;align-items:center;padding:8px 20px;border-top:1px solid rgba(255,255,255,.06)}
+.terminal-prompt{color:var(--accent-dim);font-size:.85rem;white-space:nowrap}
+.terminal-input{
+  flex:1;background:none;border:none;color:var(--accent-bright);font-family:var(--font-mono);
+  font-size:.85rem;outline:none;margin-left:8px;caret-color:var(--accent-bright)
+}
+
+/* ===== Keyboard Hint ===== */
+.kb-hint{
+  position:fixed;top:50%;right:20px;transform:translateY(-50%);
+  font-family:var(--font-mono);font-size:.65rem;color:var(--accent-dim);
+  writing-mode:vertical-rl;letter-spacing:2px;z-index:5;opacity:.4;
+  display:flex;flex-direction:column;gap:8px;align-items:center
+}
+.kb-hint kbd{
+  border:1px solid var(--accent-dim);padding:4px 6px;border-radius:2px;
+  color:var(--accent);font-size:.7rem;writing-mode:horizontal-tb
+}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  .page{padding:24px 20px}
+  .hero-name{font-size:2.4rem}
+  h2{font-size:1.6rem}
+  .about-layout{flex-direction:column;align-items:center}
+  .about-sidebar{width:auto}
+  .top-bar{padding:12px 20px}
+  .nav-arrows{bottom:20px}
+  .kb-hint{display:none}
+  .skills-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix-bg"></canvas>
+<div class="scanlines"></div>
+
+<div class="main-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">XU<span style="opacity:.4">_</span></div>
+    <div class="page-dots" id="pageDots"></div>
+    <div class="top-actions">
+      <button class="lang-btn" id="langToggle" title="Switch Language">中/EN</button>
+    </div>
+  </div>
+
+  <!-- Pages -->
+  <div class="pages-wrapper" id="pagesWrapper">
+    <!-- Page 0: Home -->
+    <div class="page active" data-page="0">
+      <div class="page-inner">
+        <div class="section-tag" data-zh="欢迎来到" data-en="Welcome to">欢迎来到</div>
+        <h1 class="hero-name"><span id="typingTarget"></span><span class="cursor">|</span></h1>
+        <div class="hero-title" data-zh="自动化工程师 / Agent 开发者" data-en="Automation Engineer / Agent Developer">自动化工程师 / Agent 开发者</div>
+        <div class="hero-sub" data-zh="专注于 RPA、智能 Agent 与 Claude Code 工作流，将重复劳动化为优雅的自动化方案。" data-en="Focused on RPA, Intelligent Agents &amp; Claude Code workflows. Turning repetitive tasks into elegant automation.">专注于 RPA、智能 Agent 与 Claude Code 工作流，将重复劳动化为优雅的自动化方案。</div>
+        <div class="hero-tags">
+          <button class="hero-tag featured" data-nav="1" data-zh="技能栈" data-en="Skills">技能栈</button>
+          <button class="hero-tag" data-nav="3" data-zh="项目" data-en="Projects">项目</button>
+          <button class="hero-tag" data-nav="4" data-zh="联系我" data-en="Contact">联系我</button>
+          <span class="hero-tag hint-tag" data-zh="↑↓ 键切换页面" data-en="↑↓ to navigate">↑↓ 键切换页面</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 1: Skills -->
+    <div class="page" data-page="1">
+      <div class="page-inner">
+        <div class="section-tag" data-zh="能力" data-en="Capabilities">能力</div>
+        <h2 data-zh="技术<span class='accent'>技能</span>" data-en="Tech <span class='accent'>Skills</span>">技术<span class="accent">技能</span></h2>
+        <div class="subtitle" data-zh="持续打磨的工具与方法论" data-en="Tools and methodologies, continuously honed">持续打磨的工具与方法论</div>
+        <div class="skills-grid" id="skillsGrid"></div>
+      </div>
+    </div>
+
+    <!-- Page 2: Experience -->
+    <div class="page" data-page="2">
+      <div class="page-inner">
+        <div class="section-tag" data-zh="经历" data-en="Experience">经历</div>
+        <h2 data-zh="工作<span class='accent'>经历</span>" data-en="Work <span class='accent'>History</span>">工作<span class="accent">经历</span></h2>
+        <div class="subtitle" data-zh="Hover 查看详情" data-en="Hover to expand details">Hover 查看详情</div>
+        <div class="timeline" id="timelineEl"></div>
+      </div>
+    </div>
+
+    <!-- Page 3: Projects -->
+    <div class="page" data-page="3">
+      <div class="page-inner">
+        <div class="section-tag" data-zh="作品" data-en="Works">作品</div>
+        <h2 data-zh="项目<span class='accent'>作品</span>" data-en="Project <span class='accent'>Showcase</span>">项目<span class="accent">作品</span></h2>
+        <div class="subtitle" data-zh="将想法落地的实践" data-en="Ideas turned into reality">将想法落地的实践</div>
+        <div class="projects-grid" id="projectsGrid"></div>
+      </div>
+    </div>
+
+    <!-- Page 4: About / Contact -->
+    <div class="page" data-page="4">
+      <div class="page-inner">
+        <div class="about-layout">
+          <div class="about-main">
+            <div class="section-tag" data-zh="关于" data-en="About">关于</div>
+            <h2 data-zh="关于<span class='accent'>我</span>" data-en="About <span class='accent'>Me</span>">关于<span class="accent">我</span></h2>
+            <div class="about-text" data-zh="你好，我是徐熠华。一名自动化工程师，专注于 RPA、智能 Agent 开发以及 Claude Code 工作流设计。我相信技术应当为人服务——好的自动化不只是替代重复劳动，更是释放创造力。目前在探索 Agent 编排与多模型协作。" data-en="Hi, I'm Xu Yihua. An automation engineer focused on RPA, intelligent agent development, and Claude Code workflow design. I believe technology should serve people — good automation doesn't just replace repetition, it unlocks creativity. Currently exploring agent orchestration and multi-model collaboration.">你好，我是徐熠华。一名自动化工程师，专注于 RPA、智能 Agent 开发以及 Claude Code 工作流设计。我相信技术应当为人服务——好的自动化不只是替代重复劳动，更是释放创造力。目前在探索 Agent 编排与多模型协作。</div>
+            <div class="contact-links">
+              <a href="mailto:your@email.com" class="contact-link">&#9993; Email</a>
+              <a href="#" class="contact-link">&#9741; GitHub</a>
+              <a href="xyh.pdf" class="contact-link" download>&#128196; <span data-zh="下载简历 PDF" data-en="Download Resume">下载简历 PDF</span></a>
+            </div>
+          </div>
+          <div class="about-sidebar">
+            <div class="qr-box">
+              <img src="webwxgetmsgimg.jpg" alt="WeChat QR" id="qrImg">
+            </div>
+            <div class="qr-label" data-zh="微信二维码" data-en="WeChat QR">微信二维码</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Label -->
+  <div class="page-label" id="pageLabel">HOME</div>
+
+  <!-- Navigation -->
+  <div class="nav-arrows">
+    <button class="nav-arrow" id="prevBtn" title="Previous">&larr;</button>
+    <button class="nav-arrow" id="nextBtn" title="Next">&rarr;</button>
+  </div>
+
+  <!-- Keyboard Hint -->
+  <div class="kb-hint">
+    <span>NAV</span><kbd>&uarr;</kbd><kbd>&darr;</kbd>
+    <span style="margin-top:16px">TERM</span><kbd>~</kbd>
+  </div>
+</div>
+
+<!-- Terminal Overlay -->
+<div class="terminal-overlay" id="terminal">
+  <div class="terminal-header">
+    <span class="terminal-title">XUYIHUA_TERMINAL v1.0</span>
+    <button class="terminal-close" id="termClose">&times;</button>
+  </div>
+  <div class="terminal-body" id="termBody">
+    <div class="line output">Xu Yihua Terminal v1.0 — Type 'help' for available commands.</div>
+    <div class="line output">─────────────────────────────────────────────</div>
+  </div>
+  <div class="terminal-input-line">
+    <span class="terminal-prompt">visitor@xyh:~$</span>
+    <input type="text" class="terminal-input" id="termInput">
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const data = {
+  skills: [
+    { name: 'RPA (UiPath / 影刀)', level: 95, icon: '&#9881;' },
+    { name: 'Python', level: 88, icon: '&#128013;' },
+    { name: 'Claude Code / Agent SDK', level: 90, icon: '&#129302;' },
+    { name: 'JavaScript / Node.js', level: 75, icon: '&#128295;' },
+    { name: 'SQL / 数据处理', level: 82, icon: '&#128202;' },
+    { name: 'Docker / DevOps', level: 70, icon: '&#128230;' },
+    { name: 'PowerShell / 脚本', level: 85, icon: '&#9889;' },
+    { name: 'Selenium / 网页自动化', level: 80, icon: '&#127760;' },
+  ],
+  experience: [
+    {
+      date: '2024 - Present', role: '高级自动化工程师', org: '某科技公司',
+      detail: '负责企业级 RPA 流程设计与 Agent 工作流开发，主导 Claude Code 集成项目，搭建内部自动化中台，年节省人力 3000+ 小时。'
+    },
+    {
+      date: '2022 - 2024', role: 'RPA 开发工程师', org: '某金融科技公司',
+      detail: '设计并交付 20+ 金融场景自动化流程，涵盖对账、报表生成、合规检查等。引入 Agent 概念优化异常处理逻辑。'
+    },
+    {
+      date: '2020 - 2022', role: '自动化测试工程师', org: '某互联网公司',
+      detail: '搭建 UI/API 自动化测试框架，将回归测试周期从 3 天缩短到 4 小时。开始接触智能自动化与 AI 辅助开发。'
+    },
+  ],
+  projects: [
+    {
+      year: '2025', name: 'Agent 编排平台', desc: '基于 Claude Agent SDK 的多 Agent 协作平台，支持任务分发、结果汇总与人工审核节点。',
+      techs: ['Claude API', 'Python', 'FastAPI', 'React']
+    },
+    {
+      year: '2025', name: 'Claude Code 工作流集合', desc: '一套面向运维与开发场景的 Claude Code 自定义指令与技能包，覆盖代码审查、部署检查、日志分析。',
+      techs: ['Claude Code', 'Shell', 'Markdown']
+    },
+    {
+      year: '2024', name: '财务 RPA 机器人矩阵', desc: '为财务部门打造 8 个 RPA 机器人，自动化发票校验、银企对账、税务申报全流程。',
+      techs: ['UiPath', 'Python', 'SQL', 'SAP']
+    },
+    {
+      year: '2024', name: '智能文档处理管线', desc: '结合 OCR 与 LLM，自动识别、分类、提取合同与发票关键字段，准确率 95%+。',
+      techs: ['Python', 'PaddleOCR', 'LangChain']
+    },
+    {
+      year: '2023', name: '自动化测试中台', desc: '统一的自动化测试调度与报告平台，支持多项目并行执行与失败自动重试。',
+      techs: ['Selenium', 'Jenkins', 'Allure', 'Docker']
+    },
+  ]
+};
+
+// ===== STATE =====
+let currentPage = 0;
+const totalPages = 5;
+const pageNames = ['HOME', 'SKILLS', 'EXPERIENCE', 'PROJECTS', 'ABOUT'];
+let lang = 'zh';
+let pageChanging = false;
+
+// ===== CANVAS RAIN (silver/white particles) =====
+const canvas = document.getElementById('matrix-bg');
+const ctx = canvas.getContext('2d');
+let drops = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const cols = Math.floor(canvas.width / 22);
+  drops = Array(cols).fill(0).map(() => Math.random() * canvas.height / 20);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>/{}[]|&^%$#@!';
+function drawRain() {
+  ctx.fillStyle = 'rgba(7,7,8,.06)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = '15px monospace';
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const x = i * 22;
+    const y = drops[i] * 22;
+    const alpha = y > canvas.height * 0.65 ? 0.12 : y > canvas.height * 0.4 ? 0.2 : 0.28;
+    ctx.fillStyle = `rgba(180,190,200,${alpha})`;
+    ctx.fillText(char, x, y);
+    if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}
+setInterval(drawRain, 55);
+
+// ===== PAGES =====
+const pages = document.querySelectorAll('.page');
+const pageLabel = document.getElementById('pageLabel');
+const pageDots = document.getElementById('pageDots');
+
+for (let i = 0; i < totalPages; i++) {
+  const dot = document.createElement('span');
+  dot.className = 'page-dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => goToPage(i));
+  pageDots.appendChild(dot);
+}
+
+function goToPage(idx) {
+  if (pageChanging || idx === currentPage || idx < 0 || idx >= totalPages) return;
+  pageChanging = true;
+
+  const oldPage = pages[currentPage];
+  const newPage = pages[idx];
+  const goingForward = idx > currentPage;
+
+  // Exit old page
+  oldPage.classList.remove('active');
+  oldPage.classList.add(goingForward ? 'exit-up' : 'exit-down');
+
+  // Enter new page
+  newPage.classList.remove('exit-up', 'exit-down');
+  newPage.classList.add('active');
+
+  currentPage = idx;
+  pageLabel.textContent = pageNames[idx];
+  document.querySelectorAll('.page-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+
+  // Animate skill bars when landing on skills page
+  if (idx === 1) setTimeout(animateSkills, 100);
+
+  setTimeout(() => { pageChanging = false; }, 450);
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => goToPage(currentPage - 1));
+document.getElementById('nextBtn').addEventListener('click', () => goToPage(currentPage + 1));
+
+// Hero tag nav
+document.querySelectorAll('[data-nav]').forEach(tag => {
+  tag.addEventListener('click', e => { e.preventDefault(); goToPage(parseInt(tag.dataset.nav)); });
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (document.getElementById('terminal').classList.contains('open')) return;
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); goToPage(currentPage - 1); }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); goToPage(currentPage + 1); }
+  if (e.key === '`' || e.key === '~') { e.preventDefault(); toggleTerminal(); }
+});
+
+// Touch nav
+let touchStartY = 0;
+document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive: true});
+document.addEventListener('touchend', e => {
+  const diff = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(diff) > 50) goToPage(currentPage + (diff > 0 ? 1 : -1));
+});
+
+// Mouse wheel nav
+let wheelAccum = 0;
+document.addEventListener('wheel', e => {
+  wheelAccum += e.deltaY;
+  if (Math.abs(wheelAccum) > 80) {
+    goToPage(currentPage + (wheelAccum > 0 ? 1 : -1));
+    wheelAccum = 0;
+  }
+}, {passive: true});
+
+// ===== TYPING EFFECT =====
+const typingTarget = document.getElementById('typingTarget');
+const nameText = '徐熠华';
+let typeIdx = 0;
+function typeWriter() {
+  if (typeIdx < nameText.length) {
+    typingTarget.textContent += nameText[typeIdx];
+    typeIdx++;
+    setTimeout(typeWriter, 180 + Math.random() * 120);
+  }
+}
+setTimeout(typeWriter, 400);
+
+// ===== RENDER SKILLS =====
+const skillsGrid = document.getElementById('skillsGrid');
+data.skills.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'skill-card';
+  card.innerHTML = `<div class="skill-icon">${s.icon}</div><div class="skill-name">${s.name}</div><div class="skill-level">${s.level}%</div><div class="skill-bar"><div class="skill-bar-fill"></div></div>`;
+  skillsGrid.appendChild(card);
+});
+
+function animateSkills() {
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.skill-bar-fill').forEach((bar, i) => {
+      const pct = data.skills[i] ? data.skills[i].level + '%' : '0%';
+      setTimeout(() => { bar.style.width = pct; }, i * 60);
+    });
+  });
+}
+
+// ===== RENDER TIMELINE =====
+const timelineEl = document.getElementById('timelineEl');
+data.experience.forEach(exp => {
+  const item = document.createElement('div');
+  item.className = 'timeline-item';
+  item.innerHTML = `<div class="timeline-date">${exp.date}</div><div class="timeline-role">${exp.role}</div><div class="timeline-org">${exp.org}</div><div class="timeline-detail"><div class="timeline-detail-inner">${exp.detail}</div></div>`;
+  timelineEl.appendChild(item);
+});
+
+// ===== RENDER PROJECTS =====
+const projectsGrid = document.getElementById('projectsGrid');
+data.projects.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'project-card';
+  card.innerHTML = `<div class="project-year">${p.year}</div><div class="project-name">${p.name}</div><div class="project-desc">${p.desc}</div><div class="project-techs">${p.techs.map(t => `<span class="project-tech">${t}</span>`).join('')}</div>`;
+  projectsGrid.appendChild(card);
+});
+
+// ===== BILINGUAL =====
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('[data-zh]').forEach(el => {
+    const zh = el.dataset.zh;
+    const en = el.dataset.en;
+    if (!zh || !en) return;
+    if (el.children.length === 0) {
+      el.textContent = l === 'zh' ? zh : en;
+    } else {
+      // For elements with child nodes (like h2 with <span>), use innerHTML
+      el.innerHTML = l === 'zh' ? zh : en;
+    }
+  });
+  document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+}
+
+document.getElementById('langToggle').addEventListener('click', () => setLang(lang === 'zh' ? 'en' : 'zh'));
+
+// ===== TERMINAL =====
+const terminal = document.getElementById('terminal');
+const termBody = document.getElementById('termBody');
+const termInput = document.getElementById('termInput');
+
+function toggleTerminal() {
+  const isOpen = terminal.classList.toggle('open');
+  if (isOpen) {
+    setTimeout(() => termInput.focus(), 300);
+  } else {
+    termInput.value = '';
+  }
+}
+
+document.getElementById('termClose').addEventListener('click', toggleTerminal);
+
+const termCmds = {
+  help: 'Commands: about | skills | projects | contact | lang [zh/en] | clear | exit | whoami | date',
+  whoami: 'Xu Yihua — Automation Engineer & Agent Developer',
+  about: 'Xu Yihua — Focused on RPA, Intelligent Agents & Claude Code workflows. Turning repetition into automation.',
+  skills: data.skills.map(s => `  ${s.icon} ${s.name} (${s.level}%)`).join('\n'),
+  projects: data.projects.map(p => `  [${p.year}] ${p.name} — ${p.desc}`).join('\n'),
+  contact: '  Email: your@email.com\n  WeChat QR: See About page\n  Resume: xyh.pdf',
+  date: new Date().toString(),
+};
+
+termInput.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const cmd = termInput.value.trim().toLowerCase();
+  termInput.value = '';
+
+  const cmdLine = document.createElement('div');
+  cmdLine.className = 'line cmd';
+  cmdLine.textContent = ' ' + cmd;
+  termBody.appendChild(cmdLine);
+
+  let output = '';
+  if (cmd.startsWith('lang ')) {
+    const target = cmd.split(' ')[1];
+    if (target === 'zh' || target === 'en') { setLang(target); output = `Language switched to ${target === 'zh' ? 'Chinese' : 'English'}.`; }
+    else output = 'Usage: lang [zh/en]';
+  } else if (cmd === 'clear') {
+    while (termBody.children.length > 2) termBody.removeChild(termBody.lastChild);
+    termBody.scrollTop = termBody.scrollHeight;
+    return;
+  } else if (cmd === 'exit') {
+    toggleTerminal();
+    return;
+  } else if (termCmds[cmd]) {
+    output = termCmds[cmd];
+  } else if (cmd) {
+    output = `Command not found: ${cmd}. Type 'help' for available commands.`;
+  }
+
+  if (output) {
+    const outLine = document.createElement('div');
+    outLine.className = 'line output';
+    outLine.textContent = output;
+    termBody.appendChild(outLine);
+  }
+  termBody.scrollTop = termBody.scrollHeight;
+});
+
+termBody.addEventListener('click', () => termInput.focus());
+
+// Init
+setLang('zh');
+</script>
+</body>
+</html>
