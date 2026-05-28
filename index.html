@@ -218,7 +218,8 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
-  .page{padding:20px 16px;padding-top:70px}
+  .page{padding:20px 16px;padding-top:70px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .page-inner{max-width:100%}
   .hero-name{font-size:2.4rem}
   h2{font-size:1.6rem}
   .about-layout{flex-direction:column;align-items:center}
@@ -261,7 +262,7 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
     <!-- Page 0: Home -->
     <div class="page active" data-page="0">
       <div class="page-inner">
-        <div class="section-tag" data-zh="欢迎来到" data-en="Welcome to">欢迎来到</div>
+        <div class="section-tag" data-zh="关于我" data-en="About Me">关于我</div>
         <h1 class="hero-name"><span id="typingTarget"></span><span class="cursor">|</span></h1>
         <div class="hero-title" data-zh="RPA 工程师 / 软件开发工程师" data-en="RPA Engineer / Software Developer">RPA 工程师 / 软件开发工程师</div>
         <div class="hero-sub" data-zh="2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，擅长复杂业务逻辑实现与系统性能优化。" data-en="2 years RPA development + 3 years ERP system development. Skilled in complex business logic and system optimization.">2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，擅长复杂业务逻辑实现与系统性能优化。</div>
@@ -505,12 +506,19 @@ document.addEventListener('keydown', e => {
   if (e.key === '`' || e.key === '~') { e.preventDefault(); toggleTerminal(); }
 });
 
-// Touch nav
-let touchStartY = 0;
-document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, {passive: true});
+// Touch nav (horizontal swipe only, vertical scroll within page)
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, {passive: true});
 document.addEventListener('touchend', e => {
-  const diff = touchStartY - e.changedTouches[0].clientY;
-  if (Math.abs(diff) > 50) goToPage(currentPage + (diff > 0 ? 1 : -1));
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  // Only change page if horizontal swipe dominates
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    goToPage(currentPage + (dx > 0 ? 1 : -1));
+  }
 });
 
 // Mouse wheel nav
@@ -525,7 +533,7 @@ document.addEventListener('wheel', e => {
 
 // ===== TYPING EFFECT =====
 const typingTarget = document.getElementById('typingTarget');
-const nameText = '徐熠华';
+const nameText = '徐熠华XuYiHua';
 let typeIdx = 0;
 function typeWriter() {
   if (typeIdx < nameText.length) {
