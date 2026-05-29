@@ -100,8 +100,8 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
   font-family:var(--font-mono);font-size:.8rem;transition:all .3s;text-decoration:none;
   border-radius:2px;cursor:pointer;background:none
 }
-.hero-tag:hover{background:rgba(255,255,255,.04);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
-.hero-tag.featured{background:rgba(255,255,255,.03);border-color:var(--accent)}
+.hero-tag:hover{background:rgba(142,164,184,.1);box-shadow:0 0 16px var(--accent-glow),inset 0 0 12px rgba(142,164,184,.05);border-color:var(--accent-bright);color:var(--accent-bright)}
+.hero-tag.featured{background:rgba(142,164,184,.08);border-color:var(--accent);box-shadow:0 0 8px rgba(142,164,184,.15)}
 
 /* ===== Skills Page ===== */
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
@@ -115,7 +115,20 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
 }
 .skill-card:hover::before{transform:scaleX(1)}
 .skill-card:hover{border-color:var(--accent-dim);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.skill-icon{font-size:2rem;margin-bottom:10px}
+.skill-icon{
+  width:52px;height:52px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(142,164,184,.1),rgba(142,164,184,.03));
+  border:1px solid rgba(142,164,184,.12);
+  transition:all .4s
+}
+.skill-card:hover .skill-icon{
+  border-color:var(--accent);
+  box-shadow:0 0 16px var(--accent-glow);
+  background:linear-gradient(135deg,rgba(142,164,184,.18),rgba(142,164,184,.06))
+}
+.skill-icon svg{width:26px;height:26px}
 .skill-name{color:var(--white);font-weight:600;margin-bottom:4px}
 .skill-level{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-dim)}
 .skill-bar{height:3px;background:rgba(255,255,255,.06);margin-top:8px;border-radius:2px}
@@ -164,9 +177,9 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
 .qr-box{
   width:160px;height:160px;border:1px solid var(--accent-dim);margin:0 auto 12px;
   display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:var(--card);transition:all .3s;border-radius:2px
+  background:#fff;transition:all .3s;border-radius:6px;padding:8px
 }
-.qr-box img{width:100%;height:100%;object-fit:cover}
+.qr-box img{width:100%;height:100%;object-fit:contain;border-radius:3px}
 .qr-box:hover{border-color:var(--accent-bright);box-shadow:0 0 20px var(--accent-glow)}
 .qr-label{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-dim);letter-spacing:1px}
 .contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
@@ -175,7 +188,7 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
   color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.8rem;
   transition:all .3s;border-radius:2px
 }
-.contact-link:hover{background:rgba(255,255,255,.04);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright)}
+.contact-link:hover{background:rgba(142,164,184,.08);box-shadow:0 0 16px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
 
 /* ===== Terminal ===== */
 .terminal-overlay{
@@ -316,7 +329,7 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
             <div class="contact-links">
               <a href="mailto:Xyh15921623415@163.com" class="contact-link">&#9993; Email</a>
               <a href="#" class="contact-link">&#9741; GitHub</a>
-              <a href="xyh.pdf" class="contact-link" target="_blank">&#128196; <span data-zh="下载简历 PDF" data-en="Download Resume">下载简历 PDF</span></a>
+              <a href="xyh.pdf" class="contact-link" target="_blank">&#128196; <span data-zh="浏览简历 PDF" data-en="Download Resume">浏览简历 PDF</span></a>
             </div>
           </div>
           <div class="about-sidebar">
@@ -366,14 +379,14 @@ h2 .accent{color:var(--accent-bright);font-weight:400}
 // ===== DATA =====
 const data = {
   skills: [
-    { name: '影刀 RPA / 实在 Agent', level: 95, icon: '&#9881;' },
-    { name: 'Python', level: 88, icon: '&#128013;' },
-    { name: 'Spring / SpringBoot / MyBatis', level: 85, icon: '&#9729;' },
-    { name: 'MySQL / Oracle', level: 82, icon: '&#128202;' },
-    { name: 'HTML / CSS / JavaScript', level: 75, icon: '&#128295;' },
-    { name: 'Dify / 大模型部署', level: 80, icon: '&#129302;' },
-    { name: 'Docker / Linux / Windows', level: 70, icon: '&#128230;' },
-    { name: 'ERP / 供应链 PLM', level: 88, icon: '&#128188;' },
+    { name: '影刀 RPA / 实在 Agent', level: 95, icon: 'rpa' },
+    { name: 'Python', level: 88, icon: 'python' },
+    { name: 'Spring / SpringBoot / MyBatis', level: 85, icon: 'spring' },
+    { name: 'MySQL / Oracle', level: 82, icon: 'database' },
+    { name: 'HTML / CSS / JavaScript', level: 75, icon: 'web' },
+    { name: 'Dify / 大模型部署', level: 80, icon: 'ai' },
+    { name: 'Docker / Linux / Windows', level: 70, icon: 'docker' },
+    { name: 'ERP / 供应链 PLM', level: 88, icon: 'erp' },
   ],
   experience: [
     {
@@ -545,11 +558,25 @@ function typeWriter() {
 setTimeout(typeWriter, 400);
 
 // ===== RENDER SKILLS =====
+const c = 'rgba(188,200,212,0.9)';
+function skillSVG(type) {
+  const s = {
+    rpa: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+    python: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+    spring: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21.5h-3a1 1 0 01-1-1v-3a8 8 0 0116 0v1"/><path d="M12 22a4 4 0 004-4v-2a4 4 0 00-8 0"/><circle cx="12" cy="6" r="3"/><path d="M19 10c0 1.5-1 2-3 2h-1"/><path d="M8 10c0 1.5 1 2 3 2h1"/></svg>',
+    database: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 3.79 2 6s4.48 4 10 4 10-1.79 10-4-4.48-4-10-4z"/><path d="M2 6v6c0 2.21 4.48 4 10 4s10-1.79 10-4V6"/><path d="M2 12v6c0 2.21 4.48 4 10 4s10-1.79 10-4v-6"/></svg>',
+    web: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>',
+    ai: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 014 4v1a4 4 0 01-8 0V6a4 4 0 014-4z"/><path d="M8 10H6a2 2 0 00-2 2v1a8 8 0 0016 0v-1a2 2 0 00-2-2h-2"/><path d="M9 18a3 3 0 006 0"/><line x1="9" y1="22" x2="15" y2="22"/></svg>',
+    docker: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2v3H2z"/><path d="M6 10h2v3H6z"/><path d="M10 10h2v3h-2z"/><path d="M14 10h2v3h-2z"/><path d="M6 7h2v2H6z"/><path d="M10 7h2v2h-2z"/><path d="M10 4h2v2h-2z"/><path d="M18 10c0 0 1 0 2-1s1-2 0-3"/><path d="M4 17c0 2 2 4 8 4s8-2 8-4"/></svg>',
+    erp: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>'
+  };
+  return s[type] || '';
+}
 const skillsGrid = document.getElementById('skillsGrid');
 data.skills.forEach(s => {
   const card = document.createElement('div');
   card.className = 'skill-card';
-  card.innerHTML = `<div class="skill-icon">${s.icon}</div><div class="skill-name">${s.name}</div><div class="skill-level">${s.level}%</div><div class="skill-bar"><div class="skill-bar-fill"></div></div>`;
+  card.innerHTML = `<div class="skill-icon">${skillSVG(s.icon)}</div><div class="skill-name">${s.name}</div><div class="skill-level">${s.level}%</div><div class="skill-bar"><div class="skill-bar-fill"></div></div>`;
   skillsGrid.appendChild(card);
 });
 
