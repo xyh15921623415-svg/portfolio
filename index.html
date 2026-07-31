@@ -1,698 +1,1333 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>徐熠华 | Portfolio</title>
-<style>
-/* ===== Reset & Base ===== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --accent:#8ea4b8;--accent-bright:#bcc8d4;--accent-dim:#6b7d8e;
-  --accent-glow:rgba(142,164,184,.4);--accent-glow-strong:rgba(160,180,200,.6);
-  --dark:#0c0c0d;--darker:#070708;--card:#141416;
-  --text:#c8ccd0;--text-dim:#7a7e84;--white:#e8eaec;
-  --font-mono:'Courier New',monospace;--font-sans:'Segoe UI',system-ui,sans-serif;
-}
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  font-family:var(--font-sans);background:var(--darker);color:var(--text);
-  overflow:hidden;height:100vh;width:100vw;
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f1e8">
+  <meta name="description" content="徐熠华的个人作品集：RPA、AI 智能自动化、企业级 ERP 开发与跨境电商业务系统协同。">
+  <meta name="author" content="徐熠华">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="徐熠华｜RPA / 智能自动化工程师">
+  <meta property="og:description" content="把复杂业务规则，变成可运行、可追踪、可迭代的自动化系统。">
+  <meta property="og:url" content="https://xyh19990211.top/">
+  <meta property="og:image" content="https://xyh19990211.top/og-cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://xyh19990211.top/">
+  <title>徐熠华｜RPA / 智能自动化工程师</title>
+  <style>
+    :root {
+      --paper: #f3f1e8;
+      --surface: #faf9f4;
+      --ink: #102c3b;
+      --ink-soft: #526875;
+      --teal: #007d83;
+      --teal-dark: #005d63;
+      --teal-pale: #d9eeeb;
+      --sand: #dfd7c6;
+      --line: rgba(16, 44, 59, .14);
+      --shadow: 0 24px 70px rgba(24, 45, 52, .10);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --max: 1180px;
+    }
 
-/* ===== Canvas Rain Background ===== */
-#matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.12;pointer-events:none}
+    * {
+      box-sizing: border-box;
+    }
 
-/* ===== Scanline overlay ===== */
-.scanlines{position:fixed;top:0;left:0;width:100%;height:100%;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.006) 2px,rgba(255,255,255,.006) 4px);
-  z-index:1;pointer-events:none}
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+    }
 
-/* ===== Main Container ===== */
-.main-container{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column}
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 9% 3%, rgba(0, 125, 131, .10), transparent 24rem),
+        linear-gradient(rgba(16, 44, 59, .025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 44, 59, .025) 1px, transparent 1px),
+        var(--paper);
+      background-size: auto, 32px 32px, 32px 32px, auto;
+      font-family: "Aptos", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ===== Top Bar ===== */
-.top-bar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:16px 40px;border-bottom:1px solid rgba(255,255,255,.06);
-  backdrop-filter:blur(12px);background:rgba(7,7,8,.88);z-index:10;
-}
-.logo{font-family:var(--font-mono);color:var(--accent-bright);font-size:1.4rem;font-weight:bold;
-  letter-spacing:2px}
-.top-actions{display:flex;gap:16px;align-items:center}
-.lang-btn{
-  background:none;border:1px solid var(--accent-dim);color:var(--accent);padding:6px 14px;
-  font-family:var(--font-mono);font-size:.8rem;cursor:pointer;transition:all .3s;
-  border-radius:2px;text-transform:uppercase;letter-spacing:1px
-}
-.lang-btn:hover{background:rgba(255,255,255,.04);border-color:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
-.page-dots{display:flex;gap:10px}
-.page-dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--accent-dim);
-  background:transparent;cursor:pointer;transition:all .3s}
-.page-dot.active{background:var(--accent-bright);box-shadow:0 0 8px var(--accent-glow);border-color:var(--accent-bright)}
-.page-dot:hover{border-color:var(--accent-bright)}
+    body.menu-open {
+      overflow: hidden;
+    }
 
-/* ===== Page Wrapper ===== */
-.pages-wrapper{flex:1;position:relative;overflow:hidden}
-.page{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transform:translateY(40px);transition:all .45s cubic-bezier(.4,0,.2,1);
-  pointer-events:none;padding:40px 80px;
-}
-.page.active{opacity:1;transform:translateY(0);pointer-events:all}
-.page.exit-up{opacity:0;transform:translateY(-40px)}
-.page.exit-down{opacity:0;transform:translateY(40px)}
-.page-inner{max-width:900px;width:100%}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* ===== Navigation Arrows ===== */
-.nav-arrows{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:30px;z-index:10}
-.nav-arrow{
-  width:48px;height:48px;border:1px solid var(--accent-dim);background:rgba(7,7,8,.85);
-  color:var(--accent);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;transition:all .3s;font-family:var(--font-mono);border-radius:2px
-}
-.nav-arrow:hover{background:rgba(255,255,255,.04);box-shadow:0 0 16px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
-.nav-arrow:active{transform:scale(.94)}
-.page-label{
-  position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
-  font-family:var(--font-mono);color:var(--accent-dim);font-size:.72rem;
-  letter-spacing:4px;text-transform:uppercase;z-index:10
-}
+    button {
+      font: inherit;
+    }
 
-/* ===== Typography ===== */
-.section-tag{font-family:var(--font-mono);color:var(--accent);font-size:.75rem;
-  letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
-.section-tag::before{content:'> ';opacity:.5}
-h2{font-size:2.4rem;color:var(--white);margin-bottom:8px;font-weight:300;letter-spacing:1px}
-h2 .accent{color:var(--accent-bright);font-weight:400}
-.subtitle{color:var(--text-dim);font-size:1rem;margin-bottom:32px;font-family:var(--font-mono)}
+    ::selection {
+      color: #fff;
+      background: var(--teal);
+    }
 
-/* ===== Home Page ===== */
-.hero-name{font-size:4rem;font-weight:700;color:var(--white);font-family:var(--font-mono);line-height:1.1}
-.hero-name .cursor{color:var(--accent-bright);animation:blink 1s step-end infinite}
-@keyframes blink{50%{opacity:0}}
-.hero-title{font-size:1.3rem;color:var(--accent-bright);margin:16px 0 8px;font-family:var(--font-mono)}
-.hero-sub{color:var(--text-dim);font-size:.95rem;margin-bottom:32px;max-width:520px;line-height:1.7}
-.hero-tags{display:flex;flex-wrap:wrap;gap:10px}
-.hero-tag{
-  border:1px solid var(--accent-dim);color:var(--accent);padding:6px 16px;
-  font-family:var(--font-mono);font-size:.8rem;transition:all .3s;text-decoration:none;
-  border-radius:2px;cursor:pointer;background:none
-}
-.hero-tag:hover{background:rgba(142,164,184,.1);box-shadow:0 0 16px var(--accent-glow),inset 0 0 12px rgba(142,164,184,.05);border-color:var(--accent-bright);color:var(--accent-bright)}
-.hero-tag.featured{background:rgba(142,164,184,.08);border-color:var(--accent);box-shadow:0 0 8px rgba(142,164,184,.15)}
+    .progress {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--teal);
+    }
 
-/* ===== Skills Page ===== */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.skill-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.05);padding:20px;
-  transition:all .4s;position:relative;overflow:hidden;border-radius:2px
-}
-.skill-card::before{
-  content:'';position:absolute;top:0;left:0;width:100%;height:2px;
-  background:var(--accent-bright);transform:scaleX(0);transition:transform .4s;transform-origin:left
-}
-.skill-card:hover::before{transform:scaleX(1)}
-.skill-card:hover{border-color:var(--accent-dim);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.skill-icon{
-  width:52px;height:52px;margin-bottom:14px;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:12px;
-  background:linear-gradient(135deg,rgba(142,164,184,.1),rgba(142,164,184,.03));
-  border:1px solid rgba(142,164,184,.12);
-  transition:all .4s
-}
-.skill-card:hover .skill-icon{
-  border-color:var(--accent);
-  box-shadow:0 0 16px var(--accent-glow);
-  background:linear-gradient(135deg,rgba(142,164,184,.18),rgba(142,164,184,.06))
-}
-.skill-icon svg{width:26px;height:26px}
-.skill-name{color:var(--white);font-weight:600;margin-bottom:4px}
-.skill-level{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-dim)}
-.skill-bar{height:3px;background:rgba(255,255,255,.06);margin-top:8px;border-radius:2px}
-.skill-bar-fill{height:100%;background:var(--accent-bright);transition:width 1.2s cubic-bezier(.4,0,.2,1);border-radius:2px;width:0}
+    .shell {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
 
-/* ===== Experience Timeline ===== */
-.timeline{position:relative;padding-left:30px}
-.timeline::before{
-  content:'';position:absolute;left:0;top:0;width:1px;height:100%;
-  background:linear-gradient(180deg,var(--accent-bright),rgba(255,255,255,.04))
-}
-.timeline-item{position:relative;margin-bottom:32px;cursor:pointer;transition:all .3s}
-.timeline-item::before{
-  content:'';position:absolute;left:-34px;top:8px;width:10px;height:10px;
-  border-radius:50%;background:var(--darker);border:2px solid var(--accent-dim);transition:all .3s
-}
-.timeline-item:hover::before{background:var(--accent-bright);box-shadow:0 0 12px var(--accent-glow);border-color:var(--accent-bright)}
-.timeline-date{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);margin-bottom:4px}
-.timeline-role{color:var(--white);font-weight:600;font-size:1.1rem}
-.timeline-org{color:var(--text-dim);font-size:.85rem;margin-bottom:4px}
-.timeline-detail{max-height:0;overflow:hidden;transition:max-height .5s ease;color:var(--text);font-size:.85rem;line-height:1.6}
-.timeline-item:hover .timeline-detail{max-height:200px}
-.timeline-detail-inner{padding-top:8px;border-top:1px solid rgba(255,255,255,.06);margin-top:8px}
+    .nav {
+      position: sticky;
+      z-index: 90;
+      top: 0;
+      border-bottom: 1px solid rgba(16, 44, 59, .08);
+      background: rgba(243, 241, 232, .82);
+      backdrop-filter: blur(18px);
+    }
 
-/* ===== Projects Page ===== */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
-.project-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.04);padding:24px;
-  transition:all .4s;position:relative;border-radius:2px
-}
-.project-card:hover{border-color:var(--accent-dim);transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.project-year{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-dim);letter-spacing:2px}
-.project-name{color:var(--white);font-size:1.2rem;margin:8px 0;font-weight:600}
-.project-desc{color:var(--text-dim);font-size:.85rem;line-height:1.6;margin-bottom:12px}
-.project-techs{display:flex;flex-wrap:wrap;gap:6px}
-.project-tech{
-  font-family:var(--font-mono);font-size:.68rem;padding:3px 10px;
-  border:1px solid rgba(255,255,255,.1);color:var(--accent);border-radius:2px
-}
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 74px;
+      gap: 24px;
+    }
 
-/* ===== About / Contact Page ===== */
-.about-layout{display:flex;gap:48px;align-items:flex-start}
-.about-main{flex:1}
-.about-text{line-height:1.8;color:var(--text);margin-bottom:24px}
-.about-sidebar{width:200px;text-align:center;flex-shrink:0}
-.qr-box{
-  width:160px;height:160px;border:1px solid var(--accent-dim);margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:#fff;transition:all .3s;border-radius:6px;padding:8px
-}
-.qr-box img{width:100%;height:100%;object-fit:contain;border-radius:3px}
-.qr-box:hover{border-color:var(--accent-bright);box-shadow:0 0 20px var(--accent-glow)}
-.qr-label{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-dim);letter-spacing:1px}
-.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.contact-link{
-  display:flex;align-items:center;gap:8px;border:1px solid var(--accent-dim);padding:10px 18px;
-  color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.8rem;
-  transition:all .3s;border-radius:2px
-}
-.contact-link:hover{background:rgba(142,164,184,.08);box-shadow:0 0 16px var(--accent-glow);border-color:var(--accent-bright);color:var(--accent-bright)}
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
 
-/* ===== Terminal ===== */
-.terminal-overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;
-  background:rgba(0,0,0,.94);display:none;flex-direction:column;
-  font-family:var(--font-mono)
-}
-.terminal-overlay.open{display:flex}
-.terminal-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:12px 20px;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.08)
-}
-.terminal-title{color:var(--accent);font-size:.8rem;letter-spacing:2px}
-.terminal-close{background:none;border:none;color:var(--accent);font-size:1.2rem;cursor:pointer;
-  font-family:var(--font-mono);padding:4px 10px;transition:all .2s}
-.terminal-close:hover{color:var(--accent-bright);background:rgba(255,255,255,.04)}
-.terminal-body{flex:1;padding:20px;overflow-y:auto;font-size:.85rem;line-height:1.8}
-.terminal-body .line{color:var(--text-dim)}
-.terminal-body .line.cmd{color:var(--accent-bright)}
-.terminal-body .line.cmd::before{content:'visitor@xyh:~$ ';color:var(--accent-dim)}
-.terminal-body .line.output{color:var(--text);padding-left:16px}
-.terminal-input-line{display:flex;align-items:center;padding:8px 20px;border-top:1px solid rgba(255,255,255,.06)}
-.terminal-prompt{color:var(--accent-dim);font-size:.85rem;white-space:nowrap}
-.terminal-input{
-  flex:1;background:none;border:none;color:var(--accent-bright);font-family:var(--font-mono);
-  font-size:.85rem;outline:none;margin-left:8px;caret-color:var(--accent-bright)
-}
+    .brand-mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--ink);
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
 
-/* ===== Keyboard Hint ===== */
-.kb-hint{
-  position:fixed;top:50%;right:20px;transform:translateY(-50%);
-  font-family:var(--font-mono);font-size:.65rem;color:var(--accent-dim);
-  writing-mode:vertical-rl;letter-spacing:2px;z-index:5;opacity:.4;
-  display:flex;flex-direction:column;gap:8px;align-items:center
-}
-.kb-hint kbd{
-  border:1px solid var(--accent-dim);padding:4px 6px;border-radius:2px;
-  color:var(--accent);font-size:.7rem;writing-mode:horizontal-tb
-}
+    .brand small {
+      display: block;
+      margin-top: -4px;
+      color: var(--ink-soft);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
 
-/* ===== Responsive ===== */
-@media(max-width:768px){
-  .page{padding:20px 16px;padding-top:70px;overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .page-inner{max-width:100%}
-  .hero-name{font-size:2.4rem}
-  h2{font-size:1.6rem}
-  .about-layout{flex-direction:column;align-items:center}
-  .about-sidebar{width:auto}
-  .top-bar{padding:10px 16px}
-  .nav-arrows{bottom:16px}
-  .kb-hint{display:none}
-  .skills-grid{grid-template-columns:1fr}
-  .projects-grid{grid-template-columns:1fr}
-  .section-tag{font-size:.7rem}
-  .hero-sub{font-size:.85rem}
-  .hero-tags{gap:8px}
-  .hero-tag{padding:5px 12px;font-size:.75rem}
-  .timeline-item .timeline-detail{max-height:none}
-  .timeline-detail-inner{padding-top:8px;border-top:1px solid rgba(255,255,255,.06);margin-top:8px}
-}
-@supports(height:100dvh){
-  body{height:100dvh}
-  .main-container{height:100dvh}
-}
-</style>
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink-soft);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      padding: 9px 13px;
+      border-radius: 999px;
+      transition: color .2s ease, background .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .55);
+      outline: none;
+    }
+
+    .nav-cta,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 800;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .nav-cta,
+    .button-primary {
+      color: #fff;
+      background: var(--ink);
+      box-shadow: 0 10px 25px rgba(16, 44, 59, .16);
+    }
+
+    .nav-cta:hover,
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, .45);
+    }
+
+    .button-secondary:hover {
+      background: rgba(255, 255, 255, .75);
+      box-shadow: 0 12px 30px rgba(16, 44, 59, .08);
+    }
+
+    .menu-button {
+      display: none;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: rgba(255, 255, 255, .52);
+    }
+
+    .menu-button span,
+    .menu-button::before,
+    .menu-button::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      margin: 4px auto;
+      background: currentColor;
+      content: "";
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .menu-open .menu-button span {
+      opacity: 0;
+    }
+
+    .menu-open .menu-button::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .menu-open .menu-button::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .hero {
+      display: grid;
+      min-height: calc(100vh - 74px);
+      padding: 86px 0 72px;
+      align-items: center;
+      grid-template-columns: minmax(0, 1.12fr) minmax(330px, .88fr);
+      gap: 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 20px;
+      color: var(--teal-dark);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 34px;
+      height: 2px;
+      background: var(--teal);
+      content: "";
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin-bottom: 26px;
+      font-size: clamp(44px, 6vw, 78px);
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+
+    h1 span {
+      color: var(--teal);
+    }
+
+    .hero-lead {
+      max-width: 680px;
+      margin-bottom: 32px;
+      color: var(--ink-soft);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-note {
+      margin: 18px 0 0;
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    .system-card {
+      position: relative;
+      min-height: 520px;
+      padding: 34px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .45);
+      border-radius: var(--radius-lg);
+      color: #eaf5f3;
+      background:
+        radial-gradient(circle at 80% 12%, rgba(62, 212, 201, .25), transparent 13rem),
+        var(--ink);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .system-card::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .12) 1px, transparent 1px);
+      background-size: 26px 26px;
+      content: "";
+      mask-image: linear-gradient(to bottom, #000, transparent 82%);
+    }
+
+    .system-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      color: #9fc0c5;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #62d7c8;
+      box-shadow: 0 0 0 6px rgba(98, 215, 200, .12);
+      content: "";
+    }
+
+    .system-flow {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .system-flow::before {
+      position: absolute;
+      top: 48px;
+      bottom: 48px;
+      left: 24px;
+      width: 1px;
+      background: linear-gradient(#62d7c8, rgba(98, 215, 200, .1));
+      content: "";
+    }
+
+    .flow-row {
+      position: relative;
+      display: grid;
+      padding: 17px 18px 17px 66px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .055);
+      backdrop-filter: blur(8px);
+    }
+
+    .flow-row::before {
+      position: absolute;
+      top: 23px;
+      left: 18px;
+      display: grid;
+      width: 14px;
+      height: 14px;
+      place-items: center;
+      border: 2px solid #62d7c8;
+      border-radius: 50%;
+      background: var(--ink);
+      content: "";
+    }
+
+    .flow-row b {
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .flow-row span {
+      color: #9fc0c5;
+      font-size: 13px;
+    }
+
+    .system-tags {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      gap: 8px;
+    }
+
+    .system-tags span {
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 999px;
+      color: #c3d8dc;
+      background: rgba(255, 255, 255, .055);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    section {
+      padding: 92px 0;
+    }
+
+    .section-head {
+      display: grid;
+      margin-bottom: 42px;
+      align-items: end;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.16;
+      letter-spacing: -.04em;
+    }
+
+    .section-intro {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 17px;
+    }
+
+    .capabilities {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .capability {
+      min-height: 280px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(250, 249, 244, .68);
+      transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+
+    .capability:hover {
+      transform: translateY(-5px);
+      background: var(--surface);
+      box-shadow: 0 18px 50px rgba(16, 44, 59, .08);
+    }
+
+    .capability-index {
+      display: inline-grid;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 42px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .capability h3 {
+      margin-bottom: 12px;
+      font-size: 20px;
+      letter-spacing: -.02em;
+    }
+
+    .capability p {
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    .cases {
+      display: grid;
+      gap: 18px;
+    }
+
+    .case {
+      display: grid;
+      min-height: 360px;
+      padding: 40px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: 0 15px 50px rgba(16, 44, 59, .06);
+      grid-template-columns: .74fr 1.26fr;
+      gap: 52px;
+    }
+
+    .case:nth-child(2) {
+      background: var(--ink);
+      color: #eef5f4;
+    }
+
+    .case:nth-child(2) .case-label,
+    .case:nth-child(2) .case-summary,
+    .case:nth-child(2) .case-list {
+      color: #aec3c7;
+    }
+
+    .case-number {
+      margin-bottom: 36px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .case h3 {
+      margin-bottom: 18px;
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.25;
+      letter-spacing: -.035em;
+    }
+
+    .case-label {
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .case-summary {
+      margin-bottom: 24px;
+      color: var(--ink-soft);
+      font-size: 17px;
+    }
+
+    .case-list {
+      display: grid;
+      margin: 0;
+      padding: 0;
+      color: var(--ink-soft);
+      list-style: none;
+      gap: 13px;
+    }
+
+    .case-list li {
+      position: relative;
+      padding-left: 25px;
+    }
+
+    .case-list li::before {
+      position: absolute;
+      top: .72em;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border: 2px solid var(--teal);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      margin-top: 24px;
+    }
+
+    .timeline::before {
+      position: absolute;
+      top: 22px;
+      bottom: 22px;
+      left: 186px;
+      width: 1px;
+      background: var(--line);
+      content: "";
+    }
+
+    .job {
+      display: grid;
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      grid-template-columns: 160px 1fr;
+      gap: 52px;
+    }
+
+    .job:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .job-date {
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .job-main {
+      position: relative;
+    }
+
+    .job-main::before {
+      position: absolute;
+      top: 4px;
+      left: -59px;
+      width: 12px;
+      height: 12px;
+      border: 4px solid var(--paper);
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 1px var(--teal);
+      content: "";
+    }
+
+    .job-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 20px;
+    }
+
+    .job h3 {
+      margin-bottom: 0;
+      font-size: 23px;
+      letter-spacing: -.02em;
+    }
+
+    .job-role {
+      flex: 0 0 auto;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .job p {
+      max-width: 780px;
+      margin-bottom: 0;
+      color: var(--ink-soft);
+    }
+
+    .stack-panel {
+      display: grid;
+      padding: 42px;
+      border-radius: var(--radius-lg);
+      color: #eaf5f3;
+      background: var(--ink);
+      box-shadow: var(--shadow);
+      grid-template-columns: .7fr 1.3fr;
+      gap: 60px;
+    }
+
+    .stack-panel h2 {
+      color: #fff;
+    }
+
+    .stack-panel .section-kicker {
+      color: #62d7c8;
+    }
+
+    .stack-groups {
+      display: grid;
+      gap: 24px;
+    }
+
+    .stack-group {
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .stack-group:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .stack-group h3 {
+      margin-bottom: 10px;
+      color: #62d7c8;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .stack-group p {
+      margin-bottom: 0;
+      color: #bed0d3;
+    }
+
+    .contact {
+      padding-bottom: 54px;
+    }
+
+    .contact-card {
+      position: relative;
+      padding: clamp(36px, 6vw, 74px);
+      overflow: hidden;
+      border: 1px solid rgba(16, 44, 59, .12);
+      border-radius: var(--radius-lg);
+      background: var(--teal-pale);
+    }
+
+    .contact-card::after {
+      position: absolute;
+      right: -110px;
+      bottom: -160px;
+      width: 380px;
+      height: 380px;
+      border: 80px solid rgba(0, 125, 131, .09);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .contact-card h2 {
+      max-width: 770px;
+      margin-bottom: 22px;
+      font-size: clamp(36px, 5vw, 62px);
+    }
+
+    .contact-card > p {
+      max-width: 680px;
+      margin-bottom: 32px;
+      color: var(--ink-soft);
+      font-size: 17px;
+    }
+
+    .contact-links {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      min-height: 46px;
+      padding: 0 17px;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(16, 44, 59, .14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .5);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .contact-link:hover,
+    .contact-link:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, .82);
+      outline: none;
+    }
+
+    footer {
+      display: flex;
+      padding: 22px 0 38px;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    [data-reveal] {
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform .65s cubic-bezier(.22, 1, .36, 1), opacity .65s ease;
+    }
+
+    [data-reveal].visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .mobile-menu {
+        position: fixed;
+        z-index: 80;
+        inset: 74px 0 0;
+        display: grid;
+        padding: 36px 20px;
+        align-content: start;
+        gap: 8px;
+        visibility: hidden;
+        opacity: 0;
+        background: rgba(243, 241, 232, .98);
+        transform: translateY(-10px);
+        transition: opacity .2s ease, transform .2s ease, visibility .2s;
+      }
+
+      .menu-open .mobile-menu {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .mobile-menu a {
+        padding: 16px 8px;
+        border-bottom: 1px solid var(--line);
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .system-card {
+        min-height: auto;
+      }
+
+      .capabilities {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .case {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .stack-panel {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(calc(100% - 28px), var(--max));
+      }
+
+      .hero {
+        padding: 62px 0 48px;
+      }
+
+      h1 {
+        font-size: clamp(42px, 13vw, 60px);
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .capabilities {
+        grid-template-columns: 1fr;
+      }
+
+      .capability {
+        min-height: auto;
+      }
+
+      .capability-index {
+        margin-bottom: 28px;
+      }
+
+      .case,
+      .stack-panel {
+        padding: 28px 22px;
+      }
+
+      .timeline::before {
+        left: 5px;
+      }
+
+      .job {
+        padding-left: 30px;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .job-main::before {
+        left: -30px;
+      }
+
+      .job-head {
+        display: block;
+      }
+
+      .job-role {
+        display: block;
+        margin-top: 6px;
+      }
+
+      .contact-links {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .contact-link {
+        justify-content: center;
+      }
+
+      footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+
+      [data-reveal] {
+        transform: none;
+        opacity: 1;
+      }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "徐熠华",
+    "url": "https://xyh19990211.top/",
+    "email": "mailto:Xyh15921623415@163.com",
+    "jobTitle": "RPA / 智能自动化工程师",
+    "sameAs": ["https://github.com/xyh15921623415-svg"],
+    "knowsAbout": ["RPA", "AI 自动化", "Python", "Java", "ERP", "MySQL", "跨境电商系统"]
+  }
+  </script>
 </head>
 <body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
 
-<canvas id="matrix-bg"></canvas>
-<div class="scanlines"></div>
-
-<div class="main-container">
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="logo">XU<span style="opacity:.4">_</span></div>
-    <div class="page-dots" id="pageDots"></div>
-    <div class="top-actions">
-      <button class="lang-btn" id="langToggle" title="Switch Language">中/EN</button>
+  <header class="nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="返回首页">
+        <span class="brand-mark">XYH</span>
+        <span>徐熠华<small>Automation Engineer</small></span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#capabilities">能力</a>
+        <a href="#cases">案例</a>
+        <a href="#experience">经历</a>
+        <a href="#stack">技术栈</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <a class="nav-cta" href="xyh.pdf" target="_blank" rel="noopener">查看简历</a>
+      <button class="menu-button" type="button" aria-label="打开导航菜单" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+      </button>
     </div>
-  </div>
+  </header>
 
-  <!-- Pages -->
-  <div class="pages-wrapper" id="pagesWrapper">
-    <!-- Page 0: Home -->
-    <div class="page active" data-page="0">
-      <div class="page-inner">
-        <div class="section-tag" data-zh="关于我" data-en="About Me">关于我</div>
-        <h1 class="hero-name"><span id="typingTarget"></span><span class="cursor">|</span></h1>
-        <div class="hero-title" data-zh="RPA 工程师 / 软件开发工程师" data-en="RPA Engineer / Software Developer">RPA 工程师 / 软件开发工程师</div>
-        <div class="hero-sub" data-zh="2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，擅长复杂业务逻辑实现与系统性能优化。" data-en="2 years RPA development + 3 years ERP system development. Skilled in complex business logic and system optimization.">2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，擅长复杂业务逻辑实现与系统性能优化。</div>
-        <div class="hero-tags">
-          <button class="hero-tag featured" data-nav="1" data-zh="技能栈" data-en="Skills">技能栈</button>
-          <button class="hero-tag" data-nav="3" data-zh="项目" data-en="Projects">项目</button>
-          <button class="hero-tag" data-nav="4" data-zh="联系我" data-en="Contact">联系我</button>
-          <span class="hero-tag hint-tag" data-zh="↑↓ 键切换页面" data-en="↑↓ to navigate">↑↓ 键切换页面</span>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="移动端导航">
+    <a href="#capabilities">核心能力</a>
+    <a href="#cases">代表案例</a>
+    <a href="#experience">工作经历</a>
+    <a href="#stack">技术栈</a>
+    <a href="#contact">联系我</a>
+    <a href="xyh.pdf" target="_blank" rel="noopener">查看 PDF 简历 ↗</a>
+  </nav>
+
+  <main id="top">
+    <div class="shell hero">
+      <div data-reveal>
+        <p class="eyebrow">RPA · AI Automation · ERP</p>
+        <h1>把复杂业务规则，变成<span>稳定运行的自动化系统。</span></h1>
+        <p class="hero-lead">
+          我是徐熠华，RPA / 智能自动化工程师。具备企业级 ERP 开发背景，专注跨境电商运营、客服、物流、库存与结算场景，从需求澄清到上线维护完整交付。
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#cases">查看代表方案</a>
+          <a class="button button-secondary" href="xyh.pdf" target="_blank" rel="noopener">下载新版简历 ↗</a>
         </div>
+        <p class="hero-note">长沙 · 欢迎交流 RPA、AI 自动化与企业系统集成机会</p>
       </div>
-    </div>
 
-    <!-- Page 1: Skills -->
-    <div class="page" data-page="1">
-      <div class="page-inner">
-        <div class="section-tag" data-zh="能力" data-en="Capabilities">能力</div>
-        <h2 data-zh="技术<span class='accent'>技能</span>" data-en="Tech <span class='accent'>Skills</span>">技术<span class="accent">技能</span></h2>
-        <div class="subtitle" data-zh="持续打磨的工具与方法论" data-en="Tools and methodologies, continuously honed">持续打磨的工具与方法论</div>
-        <div class="skills-grid" id="skillsGrid"></div>
-      </div>
-    </div>
-
-    <!-- Page 2: Experience -->
-    <div class="page" data-page="2">
-      <div class="page-inner">
-        <div class="section-tag" data-zh="经历" data-en="Experience">经历</div>
-        <h2 data-zh="工作<span class='accent'>经历</span>" data-en="Work <span class='accent'>History</span>">工作<span class="accent">经历</span></h2>
-        <div class="subtitle" data-zh="悬浮查看详情" data-en="Hover to expand details">悬浮查看详情</div>
-        <div class="timeline" id="timelineEl"></div>
-      </div>
-    </div>
-
-    <!-- Page 3: Projects -->
-    <div class="page" data-page="3">
-      <div class="page-inner">
-        <div class="section-tag" data-zh="作品" data-en="Works">作品</div>
-        <h2 data-zh="项目<span class='accent'>作品</span>" data-en="Project <span class='accent'>Showcase</span>">项目<span class="accent">作品</span></h2>
-        <div class="subtitle" data-zh="将想法落地的实践" data-en="Ideas turned into reality">将想法落地的实践</div>
-        <div class="projects-grid" id="projectsGrid"></div>
-      </div>
-    </div>
-
-    <!-- Page 4: About / Contact -->
-    <div class="page" data-page="4">
-      <div class="page-inner">
-        <div class="about-layout">
-          <div class="about-main">
-            <div class="section-tag" data-zh="关于" data-en="About">关于</div>
-            <h2 data-zh="关于<span class='accent'>我</span>" data-en="About <span class='accent'>Me</span>">关于<span class="accent">我</span></h2>
-            <div class="about-text" data-zh="你好，我是徐熠华。2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，熟悉完整业务流开发。擅长复杂业务逻辑实现与系统性能优化，具备良好的沟通能力，能快速理解业务需求。学习能力强，对新技术保持高度敏感。自学 Python 基础、影刀 RPA、实在 Agent、Dify、大模型部署、知识库等，拥有影刀 RPA 等多个 RPA+AI 高级证书。" data-en="Hi, I'm Xu Yihua. 2 years RPA development + 3 years ERP system development experience, familiar with full business flow development. Skilled in complex business logic and system optimization. Strong communicator with quick understanding of business needs. Self-taught Python, RPA, Agent, Dify, and large model deployment with multiple advanced certifications.">你好，我是徐熠华。2 年 RPA 开发经验 + 3 年 ERP 系统开发经验，熟悉完整业务流开发。擅长复杂业务逻辑实现与系统性能优化，具备良好的沟通能力，能快速理解业务需求。学习能力强，对新技术保持高度敏感。自学 Python 基础、影刀 RPA、实在 Agent、Dify、大模型部署、知识库等，拥有影刀 RPA 等多个 RPA+AI 高级证书。</div>
-            <div class="contact-links">
-              <a href="mailto:Xyh15921623415@163.com" class="contact-link">&#9993; Email</a>
-              <a href="#" class="contact-link">&#9741; GitHub</a>
-              <a href="xyh.pdf" class="contact-link" target="_blank">&#128196; <span data-zh="浏览简历 PDF" data-en="Download Resume">浏览简历 PDF</span></a>
-            </div>
+      <aside class="system-card" data-reveal aria-label="自动化交付方法">
+        <div class="system-top">
+          <span>Automation delivery</span>
+          <span class="status">Running</span>
+        </div>
+        <div class="system-flow">
+          <div class="flow-row">
+            <b>业务理解</b>
+            <span>需求访谈 · 规则拆解 · 风险边界</span>
           </div>
-          <div class="about-sidebar">
-            <div class="qr-box">
-              <img src="webwxgetmsgimg.jpg" alt="WeChat QR" id="qrImg">
-            </div>
-            <div class="qr-label" data-zh="微信二维码" data-en="WeChat QR">微信二维码</div>
+          <div class="flow-row">
+            <b>方案构建</b>
+            <span>流程建模 · 数据设计 · 异常分支</span>
+          </div>
+          <div class="flow-row">
+            <b>系统协同</b>
+            <span>平台后台 · ERP · 邮件 · 飞书 · 数据库</span>
+          </div>
+          <div class="flow-row">
+            <b>持续交付</b>
+            <span>测试上线 · 监控通知 · 迭代优化</span>
           </div>
         </div>
-      </div>
+        <div class="system-tags" aria-label="核心技术关键词">
+          <span>影刀 RPA</span>
+          <span>Python</span>
+          <span>MySQL</span>
+          <span>飞书多维表格</span>
+          <span>大模型应用</span>
+        </div>
+      </aside>
     </div>
-  </div>
 
-  <!-- Page Label -->
-  <div class="page-label" id="pageLabel">HOME</div>
+    <section id="capabilities">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="section-kicker">What I do</p>
+            <h2>不只完成页面操作，<br>更关注业务闭环。</h2>
+          </div>
+          <p class="section-intro">
+            将复杂规则、业务数据与多个系统连接起来，把自动化做成可理解、可追踪、可恢复、可继续迭代的工程方案。
+          </p>
+        </div>
+        <div class="capabilities">
+          <article class="capability" data-reveal>
+            <span class="capability-index">01</span>
+            <h3>端到端交付</h3>
+            <p>从需求访谈、规则梳理、流程建模到开发测试、上线监控和二次优化，独立推动方案落地。</p>
+          </article>
+          <article class="capability" data-reveal>
+            <span class="capability-index">02</span>
+            <h3>跨系统协同</h3>
+            <p>连接跨境平台后台、积加 ERP、邮件、飞书、Excel / PDF 与数据库，完成状态流转和数据回写。</p>
+          </article>
+          <article class="capability" data-reveal>
+            <span class="capability-index">03</span>
+            <h3>数据工程</h3>
+            <p>处理批量下载、清洗、去重、匹配、公式计算、分表汇总和复杂 SQL，让业务数据可继续使用。</p>
+          </article>
+          <article class="capability" data-reveal>
+            <span class="capability-index">04</span>
+            <h3>智能化能力</h3>
+            <p>在多语言理解、内容分类、知识库、规则判断和异常归因环节引入大模型，并保留人工兜底。</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  <!-- Navigation -->
-  <div class="nav-arrows">
-    <button class="nav-arrow" id="prevBtn" title="Previous">&larr;</button>
-    <button class="nav-arrow" id="nextBtn" title="Next">&rarr;</button>
-  </div>
+    <section id="cases">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="section-kicker">Selected solutions</p>
+            <h2>代表性解决方案</h2>
+          </div>
+          <p class="section-intro">
+            以下案例来自实际工作场景，已对内部账号、数据和流程细节做脱敏处理。
+          </p>
+        </div>
 
-  <!-- Keyboard Hint -->
-  <div class="kb-hint">
-    <span>NAV</span><kbd>&uarr;</kbd><kbd>&darr;</kbd>
-    <span style="margin-top:16px">TERM</span><kbd>~</kbd>
-  </div>
-</div>
+        <div class="cases">
+          <article class="case" data-reveal>
+            <div>
+              <p class="case-number">CASE 01</p>
+              <h3>跨平台售后与客户沟通自动化</h3>
+              <p class="case-label">Amazon · TEMU · ERP · 飞书</p>
+            </div>
+            <div>
+              <p class="case-summary">
+                将邮件、平台消息、订单数据与责任人协同串成闭环，兼顾多语言、规则分支和人工复核。
+              </p>
+              <ul class="case-list">
+                <li>根据邮件来源、标题、站点和正文进行分类，提取订单、ASIN、SKU 等关键字段。</li>
+                <li>为退货标签、退款请求和客户消息建立页面识别、语言转换、模板回复与校验分支。</li>
+                <li>关联 ERP 责任人并同步飞书进度，保留无法确认场景的人工兜底和后续追踪。</li>
+              </ul>
+            </div>
+          </article>
 
-<!-- Terminal Overlay -->
-<div class="terminal-overlay" id="terminal">
-  <div class="terminal-header">
-    <span class="terminal-title">XUYIHUA_TERMINAL v1.0</span>
-    <button class="terminal-close" id="termClose">&times;</button>
-  </div>
-  <div class="terminal-body" id="termBody">
-    <div class="line output">Xu Yihua Terminal v1.0 — Type 'help' for available commands.</div>
-    <div class="line output">─────────────────────────────────────────────</div>
-  </div>
-  <div class="terminal-input-line">
-    <span class="terminal-prompt">visitor@xyh:~$</span>
-    <input type="text" class="terminal-input" id="termInput">
-  </div>
-</div>
+          <article class="case" data-reveal>
+            <div>
+              <p class="case-number">CASE 02</p>
+              <h3>退货、面单与物流轨迹处理</h3>
+              <p class="case-label">TEMU · OTTO · OBI · Hermes · Amazon VC</p>
+            </div>
+            <div>
+              <p class="case-summary">
+                面向多平台规则差异，自动读取订单与运单、批量查询物流状态，并完成面单加工、状态回写和异常跳过。
+              </p>
+              <ul class="case-list">
+                <li>按平台规则筛选、拆分和匹配退货数据，支持单件 / 多件订单与官网批量限制。</li>
+                <li>联动 PDF 与 Excel：从标签提取 EAN、匹配 SKU、回写 PDF，并生成或上传业务标签。</li>
+                <li>为无匹配数据、页面状态异常和批次限制设计可恢复分支，减少长流程中断。</li>
+              </ul>
+            </div>
+          </article>
 
-<script>
-// ===== DATA =====
-const data = {
-  skills: [
-    { name: '影刀 RPA / 实在 Agent', level: 95, icon: 'rpa' },
-    { name: 'Python', level: 88, icon: 'python' },
-    { name: 'Spring / SpringBoot / MyBatis', level: 85, icon: 'spring' },
-    { name: 'MySQL / Oracle', level: 82, icon: 'database' },
-    { name: 'HTML / CSS / JavaScript', level: 75, icon: 'web' },
-    { name: 'Dify / 大模型部署', level: 80, icon: 'ai' },
-    { name: 'Docker / Linux / Windows', level: 70, icon: 'docker' },
-    { name: 'ERP / 供应链 PLM', level: 88, icon: 'erp' },
-  ],
-  experience: [
-    {
-      date: '2024/12 - 至今', role: 'RPA 工程师', org: '长沙世碁科技有限公司',
-      detail: '主要负责公司全业务（运营、客服、人事、财务等）RPA 自动化流程开发与维护。通过影刀 RPA + 飞书多维表格 + MySQL + Python 进行开发。涉及平台：阿里邮件监控、亚马逊电商、TEMU、京东、积加 ERP 等。自动化下载的数据清洗、过滤、替代人工重复操作。实时监控业务进度，各业务节点有效反馈到各部门推送群。'
-    },
-    {
-      date: '2024/04 - 2024/11', role: 'AI 训练师', org: '长沙市宠莱富生物科技有限公司',
-      detail: '前期负责实在 Agent 自动化产品开发，实现无人自动处理工作流。中期接入企业微信，将自动化每一步细节推送到群聊。后期接入调用大模型，让自动化流程更"聪明"地处理相关事务。涵盖财务数据抓取清洗、客服知识库维护、国内各大电商平台数据获取等。'
-    },
-    {
-      date: '2021/09 - 2024/02', role: 'JAVA 开发工程师', org: '上海浦橙信息科技有限公司',
-      detail: '负责服装供应链 ERP 系统和大宗 ERP 管理系统的开发与维护。主导采购管理、销售管理、设计管理、生产管理、结算管理、收付款管理、资金管理等核心业务模块。优化 SQL 查询与报表响应，实现与第三方系统 API 对接。参与成都港投集团、杭州亦优、长沙帘帘好运等 5 个大型项目。'
-    },
-  ],
-  projects: [
-    {
-      year: '2024', name: '电商 RPA 自动化流程矩阵', desc: '物流轨迹跟踪、亚马逊绩效邮件监控、退货面单自动下载上传、亚马逊退货规则 AI 分析等全流程自动化。',
-      techs: ['影刀 RPA', 'Python', 'MySQL', '飞书多维表格']
-    },
-    {
-      year: '2024', name: 'RPA+AI 智能体开发', desc: '基于实在 Agent 平台的端到端自动化方案，覆盖财务数据处理、人事招聘全流程，支撑无人值守自动化执行。',
-      techs: ['Python', '实在 Agent', 'Dify', '大模型 API']
-    },
-    {
-      year: '2024', name: '电商财务数据自动对账与报表', desc: '针对多电商平台，按多账号权限体系定制数据采集规则，实现数据自动分类、多维度运算与可视化报表。',
-      techs: ['Python', 'Pandas', 'OpenPyXL', '飞书']
-    },
-    {
-      year: '2023', name: '长沙帘帘好运电商 ERP 系统', desc: '负责前端页面下单数据实时匹配、集成三方接口匹配新品 SKU、数据授权管理、集成原生系统业务数据等。',
-      techs: ['SpringBoot', 'JavaScript', 'MySQL', '第三方接口']
-    },
-    {
-      year: '2022', name: '成都港投集团大宗系统', desc: '采购/销售全流程开发，复杂业务逻辑处理，系统集成对接发票验证接口，完成从合同到结算的完整业务流程。',
-      techs: ['Java', 'SpringBoot', 'JavaScript', 'MySQL']
-    },
-  ]
-};
+          <article class="case" data-reveal>
+            <div>
+              <p class="case-number">CASE 03</p>
+              <h3>经营数据与业务系统协同</h3>
+              <p class="case-label">积加 ERP · MySQL · 飞书 · Excel</p>
+            </div>
+            <div>
+              <p class="case-summary">
+                把库存、广告、销售、打款和物流日报从分散文件整理为可持续运行的数据链路。
+              </p>
+              <ul class="case-list">
+                <li>按周期更新海外仓、FBA / FBM 库存及运营数据，统一处理下载、清洗、去重和增量回写。</li>
+                <li>针对不同承运商和业务规则分表汇总，完成 SKU 映射、数量聚合、标签打印与通知。</li>
+                <li>延续 ERP 工程经验，将状态、权限、数据质量和可维护性纳入自动化方案设计。</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-// ===== STATE =====
-let currentPage = 0;
-const totalPages = 5;
-const pageNames = ['HOME', 'SKILLS', 'EXPERIENCE', 'PROJECTS', 'ABOUT'];
-let lang = 'zh';
-let pageChanging = false;
+    <section id="experience">
+      <div class="shell">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="section-kicker">Experience</p>
+            <h2>从企业系统开发，<br>到智能自动化交付。</h2>
+          </div>
+          <p class="section-intro">
+            Java / ERP 工程经历让我理解复杂业务状态和长期维护；RPA 与 AI 实践则让我能更快连接系统、规则和一线需求。
+          </p>
+        </div>
 
-// ===== CANVAS RAIN (silver/white particles) =====
-const canvas = document.getElementById('matrix-bg');
-const ctx = canvas.getContext('2d');
-let drops = [];
+        <div class="timeline">
+          <article class="job" data-reveal>
+            <time class="job-date">2024/12 — 至今</time>
+            <div class="job-main">
+              <div class="job-head">
+                <h3>长沙世碁科技有限公司</h3>
+                <span class="job-role">RPA / 智能自动化工程师</span>
+              </div>
+              <p>
+                面向运营、客服、物流、财务等部门承接自动化需求；以影刀 RPA 为执行核心，结合 Python、MySQL、飞书和大模型能力，交付跨境平台、ERP、邮件与文档协同流程。
+              </p>
+            </div>
+          </article>
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const cols = Math.floor(canvas.width / 22);
-  drops = Array(cols).fill(0).map(() => Math.random() * canvas.height / 20);
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+          <article class="job" data-reveal>
+            <time class="job-date">2024/04 — 2024/11</time>
+            <div class="job-main">
+              <div class="job-head">
+                <h3>长沙市宠莱富生物科技有限公司</h3>
+                <span class="job-role">RPA / AI 自动化开发工程师</span>
+              </div>
+              <p>
+                使用实在 Agent 与 Python 构建无人值守流程，覆盖电商财务数据、人事招聘和客服知识库；接入企业微信通知，并在文本理解、匹配和筛选环节调用大模型能力。
+              </p>
+            </div>
+          </article>
 
-const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>/{}[]|&^%$#@!';
-function drawRain() {
-  ctx.fillStyle = 'rgba(7,7,8,.06)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.font = '15px monospace';
-  for (let i = 0; i < drops.length; i++) {
-    const char = chars[Math.floor(Math.random() * chars.length)];
-    const x = i * 22;
-    const y = drops[i] * 22;
-    const alpha = y > canvas.height * 0.65 ? 0.12 : y > canvas.height * 0.4 ? 0.2 : 0.28;
-    ctx.fillStyle = `rgba(180,190,200,${alpha})`;
-    ctx.fillText(char, x, y);
-    if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
-  }
-}
-setInterval(drawRain, 55);
+          <article class="job" data-reveal>
+            <time class="job-date">2021/09 — 2024/02</time>
+            <div class="job-main">
+              <div class="job-head">
+                <h3>上海浦橙信息科技有限公司</h3>
+                <span class="job-role">Java / ERP 开发工程师</span>
+              </div>
+              <p>
+                参与服装供应链 ERP 与大宗贸易 ERP 开发维护，覆盖采购、销售、生产、结算、收付款与资金管理；负责复杂 SQL、统计报表、定时任务及第三方接口对接。
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-// ===== PAGES =====
-const pages = document.querySelectorAll('.page');
-const pageLabel = document.getElementById('pageLabel');
-const pageDots = document.getElementById('pageDots');
+    <section id="stack">
+      <div class="shell">
+        <div class="stack-panel" data-reveal>
+          <div>
+            <p class="section-kicker">Toolbox</p>
+            <h2>围绕问题选择工具，围绕交付组织技术。</h2>
+          </div>
+          <div class="stack-groups">
+            <div class="stack-group">
+              <h3>Automation & AI</h3>
+              <p>影刀 RPA、实在 Agent、Dify、企业微信 / 飞书机器人、知识库、大模型 API</p>
+            </div>
+            <div class="stack-group">
+              <h3>Development & Data</h3>
+              <p>Python、Pandas、OpenPyXL、Java、Spring Boot、MyBatis、JavaScript、复杂 SQL</p>
+            </div>
+            <div class="stack-group">
+              <h3>Systems & Platforms</h3>
+              <p>MySQL、Oracle、Docker、Linux、Windows、ERP / PLM、跨境电商业务系统</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-for (let i = 0; i < totalPages; i++) {
-  const dot = document.createElement('span');
-  dot.className = 'page-dot' + (i === 0 ? ' active' : '');
-  dot.addEventListener('click', () => goToPage(i));
-  pageDots.appendChild(dot);
-}
+    <section class="contact" id="contact">
+      <div class="shell">
+        <div class="contact-card" data-reveal>
+          <p class="section-kicker">Get in touch</p>
+          <h2>让自动化真正接住业务，<br>而不是只跑通一次。</h2>
+          <p>
+            欢迎交流 RPA / AI 自动化、企业系统集成、跨境电商业务流程优化，以及相关工程岗位机会。
+          </p>
+          <div class="contact-links">
+            <a class="contact-link" href="mailto:Xyh15921623415@163.com">邮箱 · Xyh15921623415@163.com</a>
+            <button class="contact-link" id="copy-wechat" type="button" data-value="Xyh999840">微信 · Xyh999840</button>
+            <a class="contact-link" href="https://github.com/xyh15921623415-svg" target="_blank" rel="noopener">GitHub ↗</a>
+            <a class="contact-link" href="xyh.pdf" target="_blank" rel="noopener">PDF 简历 ↗</a>
+          </div>
+          <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-function goToPage(idx) {
-  if (pageChanging || idx === currentPage || idx < 0 || idx >= totalPages) return;
-  pageChanging = true;
+  <footer class="shell">
+    <span>© 2026 徐熠华 · RPA / 智能自动化工程师</span>
+    <span>Designed around clarity, systems and delivery.</span>
+  </footer>
 
-  const oldPage = pages[currentPage];
-  const newPage = pages[idx];
-  const goingForward = idx > currentPage;
+  <script>
+    const body = document.body;
+    const menuButton = document.querySelector(".menu-button");
+    const mobileLinks = document.querySelectorAll(".mobile-menu a");
+    const progress = document.getElementById("progress");
+    const copyWechat = document.getElementById("copy-wechat");
+    const copyStatus = document.getElementById("copy-status");
 
-  // Exit old page
-  oldPage.classList.remove('active');
-  oldPage.classList.add(goingForward ? 'exit-up' : 'exit-down');
+    const closeMenu = () => {
+      body.classList.remove("menu-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "打开导航菜单");
+    };
 
-  // Enter new page
-  newPage.classList.remove('exit-up', 'exit-down');
-  newPage.classList.add('active');
-
-  currentPage = idx;
-  pageLabel.textContent = pageNames[idx];
-  document.querySelectorAll('.page-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-
-  // Animate skill bars when landing on skills page
-  if (idx === 1) setTimeout(animateSkills, 100);
-
-  setTimeout(() => { pageChanging = false; }, 450);
-}
-
-document.getElementById('prevBtn').addEventListener('click', () => goToPage(currentPage - 1));
-document.getElementById('nextBtn').addEventListener('click', () => goToPage(currentPage + 1));
-
-// Hero tag nav
-document.querySelectorAll('[data-nav]').forEach(tag => {
-  tag.addEventListener('click', e => { e.preventDefault(); goToPage(parseInt(tag.dataset.nav)); });
-});
-
-// Keyboard nav
-document.addEventListener('keydown', e => {
-  if (document.getElementById('terminal').classList.contains('open')) return;
-  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); goToPage(currentPage - 1); }
-  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); goToPage(currentPage + 1); }
-  if (e.key === '`' || e.key === '~') { e.preventDefault(); toggleTerminal(); }
-});
-
-// Touch nav (horizontal swipe only, vertical scroll within page)
-let touchStartX = 0, touchStartY = 0;
-document.addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-}, {passive: true});
-document.addEventListener('touchend', e => {
-  const dx = touchStartX - e.changedTouches[0].clientX;
-  const dy = touchStartY - e.changedTouches[0].clientY;
-  // Only change page if horizontal swipe dominates
-  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-    goToPage(currentPage + (dx > 0 ? 1 : -1));
-  }
-});
-
-// Mouse wheel nav
-let wheelAccum = 0;
-document.addEventListener('wheel', e => {
-  wheelAccum += e.deltaY;
-  if (Math.abs(wheelAccum) > 80) {
-    goToPage(currentPage + (wheelAccum > 0 ? 1 : -1));
-    wheelAccum = 0;
-  }
-}, {passive: true});
-
-// ===== TYPING EFFECT =====
-const typingTarget = document.getElementById('typingTarget');
-const nameText = '徐熠华XuYiHua';
-let typeIdx = 0;
-function typeWriter() {
-  if (typeIdx < nameText.length) {
-    typingTarget.textContent += nameText[typeIdx];
-    typeIdx++;
-    setTimeout(typeWriter, 180 + Math.random() * 120);
-  }
-}
-setTimeout(typeWriter, 400);
-
-// ===== RENDER SKILLS =====
-const c = 'rgba(188,200,212,0.9)';
-function skillSVG(type) {
-  const s = {
-    rpa: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
-    python: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
-    spring: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21.5h-3a1 1 0 01-1-1v-3a8 8 0 0116 0v1"/><path d="M12 22a4 4 0 004-4v-2a4 4 0 00-8 0"/><circle cx="12" cy="6" r="3"/><path d="M19 10c0 1.5-1 2-3 2h-1"/><path d="M8 10c0 1.5 1 2 3 2h1"/></svg>',
-    database: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 3.79 2 6s4.48 4 10 4 10-1.79 10-4-4.48-4-10-4z"/><path d="M2 6v6c0 2.21 4.48 4 10 4s10-1.79 10-4V6"/><path d="M2 12v6c0 2.21 4.48 4 10 4s10-1.79 10-4v-6"/></svg>',
-    web: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>',
-    ai: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 014 4v1a4 4 0 01-8 0V6a4 4 0 014-4z"/><path d="M8 10H6a2 2 0 00-2 2v1a8 8 0 0016 0v-1a2 2 0 00-2-2h-2"/><path d="M9 18a3 3 0 006 0"/><line x1="9" y1="22" x2="15" y2="22"/></svg>',
-    docker: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2v3H2z"/><path d="M6 10h2v3H6z"/><path d="M10 10h2v3h-2z"/><path d="M14 10h2v3h-2z"/><path d="M6 7h2v2H6z"/><path d="M10 7h2v2h-2z"/><path d="M10 4h2v2h-2z"/><path d="M18 10c0 0 1 0 2-1s1-2 0-3"/><path d="M4 17c0 2 2 4 8 4s8-2 8-4"/></svg>',
-    erp: '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>'
-  };
-  return s[type] || '';
-}
-const skillsGrid = document.getElementById('skillsGrid');
-data.skills.forEach(s => {
-  const card = document.createElement('div');
-  card.className = 'skill-card';
-  card.innerHTML = `<div class="skill-icon">${skillSVG(s.icon)}</div><div class="skill-name">${s.name}</div><div class="skill-level">${s.level}%</div><div class="skill-bar"><div class="skill-bar-fill"></div></div>`;
-  skillsGrid.appendChild(card);
-});
-
-function animateSkills() {
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.skill-bar-fill').forEach((bar, i) => {
-      const pct = data.skills[i] ? data.skills[i].level + '%' : '0%';
-      setTimeout(() => { bar.style.width = pct; }, i * 60);
+    menuButton.addEventListener("click", () => {
+      const isOpen = body.classList.toggle("menu-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "关闭导航菜单" : "打开导航菜单");
     });
-  });
-}
 
-// ===== RENDER TIMELINE =====
-const timelineEl = document.getElementById('timelineEl');
-data.experience.forEach(exp => {
-  const item = document.createElement('div');
-  item.className = 'timeline-item';
-  item.innerHTML = `<div class="timeline-date">${exp.date}</div><div class="timeline-role">${exp.role}</div><div class="timeline-org">${exp.org}</div><div class="timeline-detail"><div class="timeline-detail-inner">${exp.detail}</div></div>`;
-  timelineEl.appendChild(item);
-});
+    mobileLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
-// ===== RENDER PROJECTS =====
-const projectsGrid = document.getElementById('projectsGrid');
-data.projects.forEach(p => {
-  const card = document.createElement('div');
-  card.className = 'project-card';
-  card.innerHTML = `<div class="project-year">${p.year}</div><div class="project-name">${p.name}</div><div class="project-desc">${p.desc}</div><div class="project-techs">${p.techs.map(t => `<span class="project-tech">${t}</span>`).join('')}</div>`;
-  projectsGrid.appendChild(card);
-});
+    window.addEventListener("scroll", () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : "0%";
+    }, { passive: true });
 
-// ===== BILINGUAL =====
-function setLang(l) {
-  lang = l;
-  document.querySelectorAll('[data-zh]').forEach(el => {
-    const zh = el.dataset.zh;
-    const en = el.dataset.en;
-    if (!zh || !en) return;
-    if (el.children.length === 0) {
-      el.textContent = l === 'zh' ? zh : en;
+    const revealItems = document.querySelectorAll("[data-reveal]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealItems.forEach((item) => item.classList.add("visible"));
     } else {
-      // For elements with child nodes (like h2 with <span>), use innerHTML
-      el.innerHTML = l === 'zh' ? zh : en;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .12 });
+      revealItems.forEach((item) => observer.observe(item));
     }
-  });
-  document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
-}
 
-document.getElementById('langToggle').addEventListener('click', () => setLang(lang === 'zh' ? 'en' : 'zh'));
-
-// ===== TERMINAL =====
-const terminal = document.getElementById('terminal');
-const termBody = document.getElementById('termBody');
-const termInput = document.getElementById('termInput');
-
-function toggleTerminal() {
-  const isOpen = terminal.classList.toggle('open');
-  if (isOpen) {
-    setTimeout(() => termInput.focus(), 300);
-  } else {
-    termInput.value = '';
-  }
-}
-
-document.getElementById('termClose').addEventListener('click', toggleTerminal);
-
-const termCmds = {
-  help: 'Commands: about | skills | projects | contact | lang [zh/en] | clear | exit | whoami | date',
-  whoami: 'Xu Yihua — RPA Engineer & Software Developer',
-  about: 'Xu Yihua — 2 years RPA + 3 years ERP development. Skilled in complex business logic and system optimization.',
-  skills: data.skills.map(s => `  ${s.icon} ${s.name} (${s.level}%)`).join('\n'),
-  projects: data.projects.map(p => `  [${p.year}] ${p.name} — ${p.desc}`).join('\n'),
-  contact: '  Email: Xyh15921623415@163.com\n  WeChat: Xyh999840\n  Resume: xyh.pdf',
-  date: new Date().toString(),
-};
-
-termInput.addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  const cmd = termInput.value.trim().toLowerCase();
-  termInput.value = '';
-
-  const cmdLine = document.createElement('div');
-  cmdLine.className = 'line cmd';
-  cmdLine.textContent = ' ' + cmd;
-  termBody.appendChild(cmdLine);
-
-  let output = '';
-  if (cmd.startsWith('lang ')) {
-    const target = cmd.split(' ')[1];
-    if (target === 'zh' || target === 'en') { setLang(target); output = `Language switched to ${target === 'zh' ? 'Chinese' : 'English'}.`; }
-    else output = 'Usage: lang [zh/en]';
-  } else if (cmd === 'clear') {
-    while (termBody.children.length > 2) termBody.removeChild(termBody.lastChild);
-    termBody.scrollTop = termBody.scrollHeight;
-    return;
-  } else if (cmd === 'exit') {
-    toggleTerminal();
-    return;
-  } else if (termCmds[cmd]) {
-    output = termCmds[cmd];
-  } else if (cmd) {
-    output = `Command not found: ${cmd}. Type 'help' for available commands.`;
-  }
-
-  if (output) {
-    const outLine = document.createElement('div');
-    outLine.className = 'line output';
-    outLine.textContent = output;
-    termBody.appendChild(outLine);
-  }
-  termBody.scrollTop = termBody.scrollHeight;
-});
-
-termBody.addEventListener('click', () => termInput.focus());
-
-// Init
-setLang('zh');
-</script>
+    copyWechat.addEventListener("click", async () => {
+      const value = copyWechat.dataset.value;
+      try {
+        await navigator.clipboard.writeText(value);
+        copyWechat.textContent = "微信号已复制 ✓";
+        copyStatus.textContent = "微信号已复制";
+        window.setTimeout(() => {
+          copyWechat.textContent = `微信 · ${value}`;
+        }, 1800);
+      } catch {
+        copyStatus.textContent = `微信号：${value}`;
+      }
+    });
+  </script>
 </body>
 </html>
