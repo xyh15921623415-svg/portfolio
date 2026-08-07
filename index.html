@@ -405,22 +405,50 @@
       font-size: 13px;
     }
 
-    .system-tags {
-      display: flex;
-      flex-wrap: wrap;
+    .system-stack {
       margin-top: 30px;
-      gap: 8px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, .14);
     }
 
-    .system-tags span {
-      padding: 7px 11px;
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 999px;
-      color: #c3d8dc;
-      background: rgba(255, 255, 255, .055);
+    .system-stack > span {
+      display: block;
+      margin-bottom: 10px;
+      color: #76cfc7;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .system-stack dl {
+      display: grid;
+      margin: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 22px;
+    }
+
+    .system-stack div {
+      display: grid;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .09);
+      grid-template-columns: 48px 1fr;
+      gap: 10px;
+    }
+
+    .system-stack dt {
+      color: #76989f;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .system-stack dd {
+      margin: 0;
+      color: #d9e7e8;
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: .04em;
     }
 
     section {
@@ -501,6 +529,102 @@
       margin-bottom: 0;
       color: var(--ink-soft);
       font-size: 14px;
+    }
+
+    .demo-section {
+      padding-top: 28px;
+    }
+
+    .demo-card {
+      display: grid;
+      padding: clamp(24px, 4vw, 46px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: 0 20px 60px rgba(16, 44, 59, .08);
+      grid-template-columns: minmax(250px, .64fr) minmax(0, 1.36fr);
+      gap: clamp(28px, 5vw, 64px);
+    }
+
+    .demo-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .demo-copy h2 {
+      margin-bottom: 20px;
+      font-size: clamp(32px, 4vw, 48px);
+    }
+
+    .demo-copy > p:not(.section-kicker) {
+      margin-bottom: 26px;
+      color: var(--ink-soft);
+    }
+
+    .demo-points {
+      display: grid;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      gap: 0;
+    }
+
+    .demo-points li {
+      display: grid;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    .demo-points span {
+      color: var(--teal);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .demo-media {
+      min-width: 0;
+      align-self: center;
+    }
+
+    .demo-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(16, 44, 59, .18);
+      border-radius: 18px;
+      background: var(--ink);
+      box-shadow: 0 18px 48px rgba(16, 44, 59, .18);
+      aspect-ratio: 16 / 9;
+    }
+
+    .demo-frame video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .demo-caption {
+      display: flex;
+      margin: 12px 2px 0;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .demo-caption span:last-child {
+      flex: 0 0 auto;
+      color: var(--teal-dark);
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
 
     .cases {
@@ -860,6 +984,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .demo-card {
+        grid-template-columns: 1fr;
+      }
+
       .case {
         grid-template-columns: 1fr;
         gap: 22px;
@@ -903,6 +1031,33 @@
 
       .capability-index {
         margin-bottom: 28px;
+      }
+
+      .demo-section {
+        padding-top: 10px;
+      }
+
+      .demo-card {
+        padding: 22px;
+        gap: 24px;
+      }
+
+      .demo-copy h2 {
+        font-size: 34px;
+      }
+
+      .demo-frame {
+        border-radius: 12px;
+      }
+
+      .demo-caption {
+        display: block;
+        line-height: 1.6;
+      }
+
+      .demo-caption span {
+        display: block;
+        margin-top: 3px;
       }
 
       .case,
@@ -991,6 +1146,7 @@
       </a>
       <nav class="nav-links" aria-label="主导航">
         <a href="#capabilities">能力</a>
+        <a href="#demo">演示</a>
         <a href="#cases">案例</a>
         <a href="#experience">经历</a>
         <a href="#stack">技术栈</a>
@@ -1005,11 +1161,12 @@
 
   <nav class="mobile-menu" id="mobile-menu" aria-label="移动端导航">
     <a href="#capabilities">核心能力</a>
+    <a href="#demo">流程演示</a>
     <a href="#cases">代表案例</a>
     <a href="#experience">工作经历</a>
     <a href="#stack">技术栈</a>
     <a href="#contact">联系我</a>
-    <a href="xyh.pdf" target="_blank" rel="noopener">查看 PDF 简历 ↗</a>
+    <a href="xyh.pdf" target="_blank" rel="noopener">查看 PDF 简历</a>
   </nav>
 
   <main id="top">
@@ -1021,8 +1178,8 @@
           我是徐熠华，RPA / 智能自动化工程师。具备企业级 ERP 开发背景，专注跨境电商运营、客服、物流、库存与结算场景，从需求澄清到上线维护完整交付。
         </p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#cases">查看代表方案</a>
-          <a class="button button-secondary" href="xyh.pdf" target="_blank" rel="noopener">下载新版简历 ↗</a>
+          <a class="button button-primary" href="#demo">观看流程演示</a>
+          <a class="button button-secondary" href="xyh.pdf" target="_blank" rel="noopener">下载新版简历</a>
         </div>
         <p class="hero-note">长沙 · 欢迎交流 RPA、AI 自动化与企业系统集成机会</p>
       </div>
@@ -1050,12 +1207,15 @@
             <span>测试上线 · 监控通知 · 迭代优化</span>
           </div>
         </div>
-        <div class="system-tags" aria-label="核心技术关键词">
-          <span>影刀 RPA</span>
-          <span>Python</span>
-          <span>MySQL</span>
-          <span>飞书多维表格</span>
-          <span>大模型应用</span>
+        <div class="system-stack" aria-label="核心技术栈">
+          <span>Core stack</span>
+          <dl>
+            <div><dt>RPA</dt><dd>影刀</dd></div>
+            <div><dt>Code</dt><dd>Python</dd></div>
+            <div><dt>Data</dt><dd>MySQL</dd></div>
+            <div><dt>Flow</dt><dd>飞书多维表格</dd></div>
+            <div><dt>AI</dt><dd>大模型应用</dd></div>
+          </dl>
         </div>
       </aside>
     </div>
@@ -1092,6 +1252,37 @@
             <h3>智能化能力</h3>
             <p>在多语言理解、内容分类、知识库、规则判断和异常归因环节引入大模型，并保留人工兜底。</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section" id="demo">
+      <div class="shell">
+        <div class="demo-card" data-reveal>
+          <div class="demo-copy">
+            <p class="section-kicker">RPA in 12 seconds</p>
+            <h2>一条业务任务，如何被自动化接住。</h2>
+            <p>
+              用一段简短动效还原实际交付思路：先识别任务与规则，再执行跨系统动作，最后校验、回写并保留异常出口。
+            </p>
+            <ol class="demo-points">
+              <li><span>01</span>读取消息、订单与业务字段</li>
+              <li><span>02</span>匹配规则并执行 ERP、文档与协作流程</li>
+              <li><span>03</span>回写状态、发送通知，异常转人工复核</li>
+            </ol>
+          </div>
+          <div class="demo-media">
+            <div class="demo-frame">
+              <video data-demo-video autoplay muted loop playsinline controls preload="metadata" poster="assets/rpa-workflow-poster.png" aria-label="RPA 自动化工作流程演示">
+                <source src="assets/rpa-workflow-demo.mp4" type="video/mp4">
+                当前浏览器不支持视频播放，可查看下方的流程说明。
+              </video>
+            </div>
+            <p class="demo-caption">
+              原创流程动效；演示数据已脱敏，不包含公司后台、客户资料或第三方视频素材。
+              <span>12 sec · muted</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -1257,8 +1448,8 @@
           <div class="contact-links">
             <a class="contact-link" href="mailto:Xyh15921623415@163.com">邮箱 · Xyh15921623415@163.com</a>
             <button class="contact-link" id="copy-wechat" type="button" data-value="Xyh999840">微信 · Xyh999840</button>
-            <a class="contact-link" href="https://github.com/xyh15921623415-svg" target="_blank" rel="noopener">GitHub ↗</a>
-            <a class="contact-link" href="xyh.pdf" target="_blank" rel="noopener">PDF 简历 ↗</a>
+            <a class="contact-link" href="https://github.com/xyh15921623415-svg" target="_blank" rel="noopener">GitHub</a>
+            <a class="contact-link" href="xyh.pdf" target="_blank" rel="noopener">PDF 简历</a>
           </div>
           <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
         </div>
@@ -1278,6 +1469,7 @@
     const progress = document.getElementById("progress");
     const copyWechat = document.getElementById("copy-wechat");
     const copyStatus = document.getElementById("copy-status");
+    const demoVideo = document.querySelector("[data-demo-video]");
 
     const closeMenu = () => {
       body.classList.remove("menu-open");
@@ -1301,6 +1493,11 @@
     const revealItems = document.querySelectorAll("[data-reveal]");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    if (reduceMotion && demoVideo) {
+      demoVideo.pause();
+      demoVideo.removeAttribute("autoplay");
+    }
+
     if (reduceMotion || !("IntersectionObserver" in window)) {
       revealItems.forEach((item) => item.classList.add("visible"));
     } else {
@@ -1319,7 +1516,7 @@
       const value = copyWechat.dataset.value;
       try {
         await navigator.clipboard.writeText(value);
-        copyWechat.textContent = "微信号已复制 ✓";
+        copyWechat.textContent = "微信号已复制";
         copyStatus.textContent = "微信号已复制";
         window.setTimeout(() => {
           copyWechat.textContent = `微信 · ${value}`;
